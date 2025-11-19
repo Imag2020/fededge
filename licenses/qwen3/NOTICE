@@ -1,0 +1,21 @@
+Qwen3-4B-Instruct-2507 Model
+
+Copyright 2024 Alibaba Cloud
+
+This application uses the Qwen3-4B-Instruct-2507 model, which is made available
+by Alibaba Cloud under the Apache License 2.0.
+
+Model: unsloth_Qwen3-4B-Instruct-2507-GGUF (Q4_K_M quantization)
+Source: https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF
+Original: https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507
+
+The Qwen3 model is a large language model developed by Alibaba Cloud's Qwen team.
+It is designed for instruction-following tasks and general text generation.
+
+Attribution:
+Qwen3-4B-Instruct by Alibaba Cloud is licensed under the Apache License 2.0.
+See LICENSE for the complete license text.
+
+For more information:
+- Model Card: https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507
+- Qwen GitHub: https://github.com/QwenLM/Qwen

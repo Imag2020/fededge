@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FedEdge - Trading Dashboard</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <!-- Hamburger Menu Button (mobile only) -->
+            <button id="hamburger-menu" class="hamburger-btn" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- FedEdge Logo on the left after the sidebar -->
+            <div class="logo" style="margin-left: 100px;">
+                <div class="logo-icon">🐝</div>
+                <span>FedEdge</span>
+            </div>
+
+            <div class="status-bar">
+                <!-- My Edge Bot Buttons -->
+                <button id="scheduler-config-btn" style="
+                    background: linear-gradient(135deg, #d97706, #b45309);
+                    border: none;
+                    border-radius: 6px;
+                    padding: 6px 12px;
+                    color: white;
+                    font-size: 12px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    transition: all 0.2s;
+                    font-weight: 600;
+                    margin-left: 12px;
+                " onmouseover="this.style.background='linear-gradient(135deg, #b45309, #92400e)'"
+                   onmouseout="this.style.background='linear-gradient(135deg, #d97706, #b45309)'"
+                   title="Scheduler configuration">
+                    ⚙️ Config
+                </button>
+                <button id="license-button" style="
+                    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+                    border: none;
+                    border-radius: 6px;
+                    padding: 6px 12px;
+                    color: white;
+                    font-size: 12px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    transition: all 0.2s;
+                    font-weight: 600;
+                    margin-left: 8px;
+                " onmouseover="this.style.background='linear-gradient(135deg, #1d4ed8, #1e3a8a)'"
+                   onmouseout="this.style.background='linear-gradient(135deg, #3b82f6, #1d4ed8)'"
+                   title="Register your node">
+                    📧 Register
+                </button>
+                <!-- System Info Display -->
+                <div id="system-info-display" style="
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    margin-left: 16px;
+                    padding: 6px 12px;
+                    background: rgba(255, 255, 255, 0.1);
+                    border-radius: 6px;
+                    font-size: 11px;
+                    color: rgba(255, 255, 255, 0.8);
+                ">
+                    <span id="system-os-info" title="Operating System">🖥️ <span style="font-weight: 600;">-</span></span>
+                    <span style="color: rgba(255, 255, 255, 0.3);">|</span>
+                    <span id="system-cpu-info" title="CPU/GPU">⚡ <span style="font-weight: 600;">-</span></span>
+                    <span style="color: rgba(255, 255, 255, 0.3);">|</span>
+                    <span id="system-license-info" title="License Status">🔐 <span style="font-weight: 600;">-</span></span>
+                    <span style="color: rgba(255, 255, 255, 0.3);">|</span>
+                    <span id="system-user-info" title="User">👤 <span style="font-weight: 600;">-</span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Overlay (mobile only) -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-menu">
+            <a href="#" class="sidebar-item active" data-page="dashboard">
+                <span class="sidebar-icon">🏠</span>
+                <span class="sidebar-label">Dashboard</span>
+            </a>
+            <a href="#" class="sidebar-item" data-page="simulations">
+                <span class="sidebar-icon">📊</span>
+                <span class="sidebar-label">Simulations</span>
+            </a>
+            <a href="#" class="sidebar-item" data-page="bots">
+                <span class="sidebar-icon">🤖</span>
+                <span class="sidebar-label">Bots</span>
+            </a>
+            <a href="#" class="sidebar-item" data-page="knowledge">
+                <span class="sidebar-icon">🧠</span>
+                <span class="sidebar-label">Knowledge</span>
+            </a>
+            <a href="#" class="sidebar-item" data-page="wallets">
+                <span class="sidebar-icon">💼</span>
+                <span class="sidebar-label">Wallets</span>
+            </a>
+            <a href="#" class="sidebar-item" data-page="collective-iq">
+                <span class="sidebar-icon">🌍</span>
+                <span class="sidebar-label">Collective IQ</span>
+            </a>
+            <a href="#" class="sidebar-item" data-page="settings">
+                <span class="sidebar-icon">⚙️</span>
+                <span class="sidebar-label">Settings</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Page content will be dynamically loaded here -->
+        <div style="text-align: center; padding: 50px; color: #9ca3af;">
+            Loading dashboard...
+        </div>
+    </div>
+
+    <!-- Modal pour les statistiques d'assets -->
+    <div id="asset-stats-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h2 style="color: #fff; margin: 0; display: flex; align-items: center; gap: 10px;">
+                    📊 Asset Statistics
+                </h2>
+                <span class="close-btn" id="close-asset-stats-modal">&times;</span>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <div id="asset-stats-loading" style="text-align: center; padding: 40px; color: #9ca3af;">
+                    <div style="font-size: 24px; margin-bottom: 10px;">⏳</div>
+                    <div>Loading data...</div>
+                </div>
+                <div id="asset-stats-content" style="display: none;">
+                    <div id="price-stats-content"></div>
+                    <div id="technical-analysis-content"></div>
+                    <div id="volume-stats-content"></div>
+                    <div id="market-cap-stats-content"></div>
+                    <div id="llm-summary-content"></div>
+                    <div id="asset-chart-container" style="margin-top: 20px;">
+                        <canvas id="asset-chart"></canvas>
+                    </div>
+                </div>
+                <div id="asset-stats-error" style="display: none; text-align: center; padding: 40px; color: #ef4444;">
+                    <div style="font-size: 24px; margin-bottom: 10px;">❌</div>
+                    <div>Loading Error</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour le contexte mondial -->
+    <div id="world-context-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h2 style="color: #fff; margin: 0; display: flex; align-items: center; gap: 10px;">
+                    🌍 World Context
+                </h2>
+                <span class="close-btn" id="close-world-context-modal">&times;</span>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <div id="world-context-loading" style="text-align: center; padding: 40px; color: #9ca3af;">
+                    <div style="font-size: 24px; margin-bottom: 10px;">⏳</div>
+                    <div>Loading world context...</div>
+                </div>
+                <div id="world-context-content" style="display: none;">
+                    <!-- Last Updated -->
+                    <div style="background: #1f2937; padding: 12px 15px; border-radius: 8px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="color: #9ca3af; font-size: 13px;">
+                            <span style="margin-right: 8px;">🕐</span>Last Updated:
+                        </div>
+                        <div id="context-last-updated" style="color: #fff; font-weight: 600; font-size: 13px;">
+                            Never updated
+                        </div>
+                    </div>
+
+                    <!-- Summary -->
+                    <div style="background: #1f2937; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <h3 style="color: #fff; margin: 0 0 10px 0; font-size: 16px;">📝 Summary</h3>
+                        <div id="world-context-summary" style="color: #d1d5db; line-height: 1.6;">Loading...</div>
+                    </div>
+
+                    <!-- Sentiment Score -->
+                    <div style="background: #1f2937; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <h3 style="color: #fff; margin: 0 0 10px 0; font-size: 16px;">📊 Sentiment Score</h3>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div id="sentiment-score" style="color: #fff; font-size: 32px; font-weight: 700;">
+                                N/A
+                            </div>
+                            <div style="color: #9ca3af; font-size: 13px;">
+                                (-1.0 = Very Bearish, +1.0 = Very Bullish)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Key Themes -->
+                    <div style="background: #1f2937; padding: 15px; border-radius: 8px;">
+                        <h3 style="color: #fff; margin: 0 0 10px 0; font-size: 16px;">🔑 Key Themes</h3>
+                        <div id="key-themes-container" style="color: #d1d5db;">
+                            <div style="color: #9ca3af; font-style: italic;">No themes identified</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="world-context-error" style="display: none; text-align: center; padding: 40px; color: #ef4444;">
+                    <div style="font-size: 24px; margin-bottom: 10px;">❌</div>
+                    <div>Error loading context</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- License Modal -->
+    <div id="license-modal" style="display: none;"></div>
+
+    <!-- Modal pour l'historique des trades -->
+    <div id="trades-history-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 1200px; max-height: 90vh;">
+            <div class="modal-header">
+                <h3 class="modal-title">📊 History des Trades</h3>
+                <button class="close-btn" id="close-trades-history-modal">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 24px; overflow-y: auto;">
+                
+                <!-- Filtres et statistiques -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 16px; background: rgba(0, 0, 0, 0.2); border-radius: 8px;">
+                    <div>
+                        <h4 style="color: #fff; margin: 0 0 8px 0;">Filtres</h4>
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <select id="trades-asset-filter" style="background: rgba(0, 0, 0, 0.3); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 4px; padding: 6px 12px;">
+                                <option value="">Tous les actifs</option>
+                            </select>
+                            <select id="trades-type-filter" style="background: rgba(0, 0, 0, 0.3); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 4px; padding: 6px 12px;">
+                                <option value="">Tous les types</option>
+                                <option value="BUY">Achats</option>
+                                <option value="SELL">Ventes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="color: #9ca3af; font-size: 12px;">Total des trades</div>
+                        <div id="trades-total-count" style="color: #fff; font-size: 20px; font-weight: 600;">0</div>
+                    </div>
+                </div>
+                
+                <!-- Trades list -->
+                <div id="trades-list" style="background: rgba(0, 0, 0, 0.2); border-radius: 8px; min-height: 400px;">
+                    <div style="text-align: center; color: #9ca3af; padding: 40px; font-size: 14px;">
+                        Loading trades...
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for adding simulation -->
+    <div id="add-simulation-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 style="color: #fff; margin: 0; display: flex; align-items: center; gap: 10px;">
+                    🎯 Add Trading Simulation
+                </h3>
+                <span class="close-btn" id="close-add-simulation-modal">&times;</span>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <form id="add-simulation-form">
+                    <div style="margin-bottom: 16px;">
+                        <label style="color: #fff; display: block; margin-bottom: 8px; font-weight: 600;">Wallet</label>
+                        <select id="simulation-wallet-select" required style="
+                            background: rgba(0, 0, 0, 0.3);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            border-radius: 6px;
+                            color: #fff;
+                            padding: 10px 12px;
+                            width: 100%;
+                            font-size: 14px;
+                        ">
+                            <option value="">Select a wallet...</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 16px;">
+                        <label style="color: #fff; display: block; margin-bottom: 8px; font-weight: 600;">Trading Frequency</label>
+                        <select id="simulation-frequency-select" required style="
+                            background: rgba(0, 0, 0, 0.3);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            border-radius: 6px;
+                            color: #fff;
+                            padding: 10px 12px;
+                            width: 100%;
+                            font-size: 14px;
+                        ">
+                            <option value="5">Every 5 minutes</option>
+                            <option value="15">Every 15 minutes</option>
+                            <option value="60">Every 1 hour</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 16px;">
+                        <label style="color: #fff; display: block; margin-bottom: 8px; font-weight: 600;">Strategy</label>
+                        <select id="simulation-strategy-select" required style="
+                            background: rgba(0, 0, 0, 0.3);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            border-radius: 6px;
+                            color: #fff;
+                            padding: 10px 12px;
+                            width: 100%;
+                            font-size: 14px;
+                        ">
+                            <option value="conservative">Conservative (Low risk)</option>
+                            <option value="balanced">Balanced (Medium risk)</option>
+                            <option value="aggressive">Aggressive (High risk)</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button type="button" id="cancel-simulation-btn" style="
+                            background: rgba(239, 68, 68, 0.2);
+                            border: 1px solid rgba(239, 68, 68, 0.3);
+                            border-radius: 6px;
+                            color: #ef4444;
+                            padding: 10px 20px;
+                            cursor: pointer;
+                            font-size: 14px;
+                            font-weight: 600;
+                            flex: 1;
+                        ">Cancel</button>
+                        <button type="submit" style="
+                            background: linear-gradient(135deg, #f59e0b, #d97706);
+                            border: none;
+                            border-radius: 6px;
+                            color: #fff;
+                            padding: 10px 20px;
+                            cursor: pointer;
+                            font-size: 14px;
+                            font-weight: 600;
+                            flex: 1;
+                        ">Create Simulation</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/license.js"></script>
+    <script src="js/federated-edge-preview.js"></script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

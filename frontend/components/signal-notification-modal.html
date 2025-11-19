@@ -1,0 +1,206 @@
+<!-- Signal Notification Modal (Global - appears on any page) -->
+<div id="signal-notification-modal" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999999;
+    max-width: 400px;
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    border: 2px solid #10b981;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(16, 185, 129, 0.3);
+    animation: slideInRight 0.5s ease-out;
+    overflow: hidden;
+">
+    <!-- Header -->
+    <div style="
+        background: linear-gradient(135deg, #10b981, #059669);
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    ">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 24px; animation: pulse 1.5s ease-in-out infinite;">🎯</span>
+            <div>
+                <div style="color: #fff; font-weight: 700; font-size: 14px;">New Trading Signal!</div>
+                <div id="signal-modal-timestamp" style="color: rgba(255,255,255,0.8); font-size: 10px;">Just now</div>
+            </div>
+        </div>
+        <button onclick="window.closeSignalNotification()" style="
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        " onmouseover="this.style.background='rgba(255,255,255,0.3)'"
+           onmouseout="this.style.background='rgba(255,255,255,0.2)'">×</button>
+    </div>
+
+    <!-- Body -->
+    <div style="padding: 16px;">
+        <!-- Symbol and Action -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div>
+                <div style="color: #9ca3af; font-size: 10px; margin-bottom: 2px;">Symbol</div>
+                <div id="signal-modal-symbol" style="color: #fff; font-size: 20px; font-weight: 700;">BTCUSDT</div>
+            </div>
+            <div id="signal-modal-action-badge" style="
+                padding: 8px 16px;
+                border-radius: 8px;
+                background: linear-gradient(135deg, #10b981, #059669);
+                color: white;
+                font-weight: 700;
+                font-size: 14px;
+            ">BUY</div>
+        </div>
+
+        <!-- Price Levels -->
+        <div style="
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 12px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        ">
+            <div>
+                <div style="color: #9ca3af; font-size: 9px; margin-bottom: 2px;">Entry</div>
+                <div id="signal-modal-entry" style="color: #fff; font-size: 13px; font-weight: 600;">--</div>
+            </div>
+            <div>
+                <div style="color: #9ca3af; font-size: 9px; margin-bottom: 2px;">Take Profit</div>
+                <div id="signal-modal-tp" style="color: #10b981; font-size: 13px; font-weight: 600;">--</div>
+            </div>
+            <div>
+                <div style="color: #9ca3af; font-size: 9px; margin-bottom: 2px;">Stop Loss</div>
+                <div id="signal-modal-sl" style="color: #ef4444; font-size: 13px; font-weight: 600;">--</div>
+            </div>
+        </div>
+
+        <!-- Confidence and RSI -->
+        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+            <div style="
+                flex: 1;
+                background: rgba(59,130,246,0.1);
+                border: 1px solid rgba(59,130,246,0.2);
+                padding: 8px;
+                border-radius: 6px;
+                text-align: center;
+            ">
+                <div style="color: #9ca3af; font-size: 9px; margin-bottom: 2px;">Confidence</div>
+                <div id="signal-modal-confidence" style="color: #3b82f6; font-size: 16px; font-weight: 700;">95%</div>
+            </div>
+            <div style="
+                flex: 1;
+                background: rgba(245,158,11,0.1);
+                border: 1px solid rgba(245,158,11,0.2);
+                padding: 8px;
+                border-radius: 6px;
+                text-align: center;
+            ">
+                <div style="color: #9ca3af; font-size: 9px; margin-bottom: 2px;">RSI</div>
+                <div id="signal-modal-rsi" style="color: #f59e0b; font-size: 16px; font-weight: 700;">--</div>
+            </div>
+        </div>
+
+        <!-- Reasoning -->
+        <div style="
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 12px;
+        ">
+            <div style="color: #9ca3af; font-size: 9px; margin-bottom: 4px;">Analysis</div>
+            <div id="signal-modal-reasoning" style="color: #d1d5db; font-size: 11px; line-height: 1.4;">
+                Loading analysis...
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 8px;">
+            <button onclick="window.viewSignalDetails()" style="
+                flex: 1;
+                background: linear-gradient(135deg, #3b82f6, #1e40af);
+                border: none;
+                border-radius: 8px;
+                color: white;
+                padding: 10px;
+                font-weight: 600;
+                font-size: 12px;
+                cursor: pointer;
+                transition: all 0.2s;
+            " onmouseover="this.style.transform='translateY(-2px)'"
+               onmouseout="this.style.transform='translateY(0)'">
+                View Details
+            </button>
+            <button onclick="window.closeSignalNotification()" style="
+                flex: 1;
+                background: rgba(255,255,255,0.1);
+                border: 1px solid rgba(255,255,255,0.2);
+                border-radius: 8px;
+                color: white;
+                padding: 10px;
+                font-weight: 600;
+                font-size: 12px;
+                cursor: pointer;
+                transition: all 0.2s;
+            " onmouseover="this.style.background='rgba(255,255,255,0.15)'"
+               onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+                Dismiss
+            </button>
+        </div>
+    </div>
+
+    <!-- Auto-close progress bar -->
+    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.1);">
+        <div id="signal-modal-progress" style="
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #059669);
+            width: 100%;
+            transition: width 10s linear;
+        "></div>
+    </div>
+</div>
+
+<style>
+@keyframes slideInRight {
+    from {
+        transform: translateX(500px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(500px);
+        opacity: 0;
+    }
+}
+</style>

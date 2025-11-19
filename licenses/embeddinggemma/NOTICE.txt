@@ -1,0 +1,21 @@
+EmbeddingGemma 300M Model
+
+Copyright 2024 Google LLC
+
+This application uses the EmbeddingGemma 300M model, which is made available
+by Google under the Gemma Terms of Use.
+
+Model: unsloth_embeddinggemma-300m-GGUF (Q8_0 quantization)
+Source: https://huggingface.co/unsloth/embeddinggemma-300m-GGUF
+Original: https://huggingface.co/google/embeddinggemma-300m
+
+The EmbeddingGemma model is a text embedding model developed by Google DeepMind.
+It is based on the Gemma architecture and optimized for generating semantic embeddings.
+
+Attribution:
+EmbeddingGemma by Google is used under the Gemma Terms of Use.
+See GEMMA_TERMS.txt for the complete license text.
+
+For more information:
+- Gemma Terms: https://ai.google.dev/gemma/terms
+- Model Card: https://huggingface.co/google/embeddinggemma-300m

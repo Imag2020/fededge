@@ -1,0 +1,321 @@
+            <div class="main-container">
+                <!-- Bot de Trading -->
+                <div class="card signals-compact" style="grid-column: 1 / -1; max-width: none;">
+                    <div class="card-header">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <h2 class="card-title">🤖 Bot de Trading</h2>
+                            <button id="bot-start-stop-btn" style="
+                                background: linear-gradient(135deg, #ef4444, #dc2626);
+                                border: none;
+                                border-radius: 6px;
+                                padding: 4px 8px;
+                                color: white;
+                                font-size: 11px;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                gap: 3px;
+                                transition: all 0.2s;
+                                font-weight: 600;
+                            " title="Démarrer/Arrêter le bot">
+                                ⏸️ Arrêt
+                            </button>
+                            <button id="trading-bot-scan-btn" style="
+                                background: linear-gradient(135deg, #10b981, #059669);
+                                border: none;
+                                border-radius: 6px;
+                                padding: 4px 8px;
+                                color: white;
+                                font-size: 11px;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                gap: 3px;
+                                transition: all 0.2s;
+                                font-weight: 600;
+                            " title="Lancer un scan manuel">
+                                🔍 Scan
+                            </button>
+                            <button id="bot-config-btn" style="
+                                background: linear-gradient(135deg, #f59e0b, #d97706);
+                                border: none;
+                                border-radius: 6px;
+                                padding: 4px 8px;
+                                color: white;
+                                font-size: 11px;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                gap: 3px;
+                                transition: all 0.2s;
+                                font-weight: 600;
+                            " title="Configuration du bot">
+                                ⚙️ Config
+                            </button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div class="learning-indicator" style="font-size: 11px;">
+                                    <div class="pulse-dot" id="bot-status-indicator" style="width: 8px; height: 8px;"></div>
+                                    <span id="bot-status-text">Initialisation...</span>
+                                </div>
+                                <div style="font-size: 10px; color: #6b7280;" id="bot-scan-timer">
+                                    Prochain scan: --s
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="font-size: 10px; color: #9ca3af;" id="signals-info">
+                                    Loading...
+                                </div>
+                                <div style="font-size: 10px; color: #9ca3af;" id="bot-winrate-mini">
+                                    WR: --
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="signal-grid-compact" id="signals-container">
+                        <!-- Status du bot -->
+                        <div id="bot-state-display" style="
+                            background: rgba(0, 0, 0, 0.4);
+                            border-radius: 6px;
+                            padding: 12px;
+                            margin-bottom: 12px;
+                            border-left: 3px solid #6b7280;
+                        ">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-size: 13px; font-weight: 600; color: #fff;">Status du Bot</div>
+                                <div id="bot-mode-display" style="font-size: 11px; color: #f59e0b; background: rgba(245, 158, 11, 0.1); padding: 2px 6px; border-radius: 4px;">
+                                    Mode: Default
+                                </div>
+                            </div>
+                            <div id="bot-last-action" style="font-size: 12px; color: #9ca3af; margin-bottom: 4px;">
+                                Last action: Waiting...
+                            </div>
+                            <div id="bot-next-action" style="font-size: 11px; color: #6b7280;">
+                                Next action: Automatic scan
+                            </div>
+                        </div>
+
+                        <!-- Grid layout for stats sections -->
+                        <div style="
+                            display: grid;
+                            grid-template-columns: 1fr;
+                            gap: 12px;
+                            margin-bottom: 12px;
+                        ">
+                            <!-- Statistiques de Trading -->
+                            <div style="
+                                background: rgba(0, 0, 0, 0.4);
+                                border-radius: 6px;
+                                padding: 12px;
+                                border-left: 3px solid #8b5cf6;
+                            ">
+                                <div style="font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                                    📊 Statistiques de Trading
+                                </div>
+                                <div id="trading-stats-content" style="font-size: 12px;">
+                                    <div style="text-align: center; color: #9ca3af; padding: 20px;">
+                                        Loading statistics...
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recent Trades -->
+                            <div style="
+                                background: rgba(0, 0, 0, 0.4);
+                                border-radius: 6px;
+                                padding: 12px;
+                                border-left: 3px solid #10b981;
+                            ">
+                                <div style="font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                                    📋 Recent Trades
+                                </div>
+                                <div id="recent-trades-table" style="
+                                    background: rgba(0, 0, 0, 0.3);
+                                    border-radius: 8px;
+                                    border: 1px solid rgba(255, 255, 255, 0.1);
+                                    overflow-x: auto;
+                                ">
+                                    <div style="text-align: center; color: #9ca3af; padding: 20px; font-size: 12px;">
+                                        Aucun trade récent
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Configuration Actuelle -->
+                            <div style="
+                                background: rgba(0, 0, 0, 0.4);
+                                border-radius: 6px;
+                                padding: 12px;
+                                border-left: 3px solid #f59e0b;
+                            ">
+                                <div style="font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                                    ⚙️ Configuration Actuelle
+                                </div>
+                                <div id="bot-config-display" style="
+                                    background: rgba(0, 0, 0, 0.3);
+                                    border-radius: 8px;
+                                    border: 1px solid rgba(255, 255, 255, 0.1);
+                                    padding: 12px;
+                                    display: grid;
+                                    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                                    gap: 8px;
+                                    font-size: 11px;
+                                ">
+                                    <div style="text-align: center; color: #9ca3af;">
+                                        Configuration en cours de chargement...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Signals section -->
+                        <div style="
+                            background: rgba(0, 0, 0, 0.4);
+                            border-radius: 6px;
+                            padding: 12px;
+                            border-left: 3px solid #10b981;
+                        ">
+                            <div style="font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                                🎯 Signaux Détectés
+                            </div>
+                            <div id="bot-signals-list">
+                                <div style="text-align: center; color: #9ca3af; padding: 20px; font-size: 12px;">
+                                    Aucun signal actif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination compacte -->
+                <div class="signal-pagination-compact" id="signals-pagination" style="display: none;">
+                    <button class="pagination-btn-small" id="signals-prev-page" disabled>←</button>
+                    <span class="pagination-info-small" id="signals-pagination-info">1/1</span>
+                    <button class="pagination-btn-small" id="signals-next-page" disabled>→</button>
+                </div>
+            </div>
+        </div>
+
+    <!-- Modal pour la configuration du bot -->
+    <div id="bot-config-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h2 style="color: #fff; margin: 0; display: flex; align-items: center; gap: 10px;">
+                    ⚙️ Configuration du Bot de Trading
+                </h2>
+                <span class="close-btn" id="close-bot-config-modal">&times;</span>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+
+                <!-- Presets rapides -->
+                <div style="margin-bottom: 24px;">
+                    <h3 style="color: #fff; margin: 0 0 12px 0; font-size: 14px;">🎛️ Presets Rapides</h3>
+                    <div style="display: flex; gap: 8px;">
+                        <button id="preset-scalp-btn" style="
+                            flex: 1;
+                            background: linear-gradient(135deg, #10b981, #059669);
+                            border: none;
+                            border-radius: 6px;
+                            color: #fff;
+                            padding: 8px 12px;
+                            cursor: pointer;
+                            font-size: 11px;
+                            font-weight: 600;
+                        ">Scalp (180s)</button>
+                        <button id="preset-day-btn" style="
+                            flex: 1;
+                            background: linear-gradient(135deg, #3b82f6, #1e40af);
+                            border: none;
+                            border-radius: 6px;
+                            color: #fff;
+                            padding: 8px 12px;
+                            cursor: pointer;
+                            font-size: 11px;
+                            font-weight: 600;
+                        ">Day (300s)</button>
+                        <button id="preset-swing-btn" style="
+                            flex: 1;
+                            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+                            border: none;
+                            border-radius: 6px;
+                            color: #fff;
+                            padding: 8px 12px;
+                            cursor: pointer;
+                            font-size: 11px;
+                            font-weight: 600;
+                        ">Swing (600s)</button>
+                        <button id="preset-reset-btn" style="
+                            flex: 1;
+                            background: linear-gradient(135deg, #ef4444, #dc2626);
+                            border: none;
+                            border-radius: 6px;
+                            color: #fff;
+                            padding: 8px 12px;
+                            cursor: pointer;
+                            font-size: 11px;
+                            font-weight: 600;
+                        ">Reset</button>
+                    </div>
+                </div>
+
+                <!-- Configuration actuelle (lecture seule) -->
+                <div style="margin-bottom: 24px;">
+                    <h3 style="color: #fff; margin: 0 0 12px 0; font-size: 14px;">📋 Configuration Actuelle</h3>
+                    <div id="current-bot-config" style="
+                        background: rgba(0, 0, 0, 0.4);
+                        border-radius: 6px;
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                        padding: 12px;
+                        font-family: 'Courier New', monospace;
+                        font-size: 11px;
+                        color: #9ca3af;
+                        max-height: 300px;
+                        overflow-y: auto;
+                        white-space: pre-wrap;
+                    ">
+                        Loading configuration...
+                    </div>
+                </div>
+
+                <!-- Informations d'édition -->
+                <div style="background: rgba(59, 130, 246, 0.1); border-radius: 6px; padding: 12px; border-left: 3px solid #3b82f6;">
+                    <div style="color: #60a5fa; font-size: 12px; font-weight: 600; margin-bottom: 4px;">
+                        💡 Édition de la Configuration
+                    </div>
+                    <div style="color: #9ca3af; font-size: 11px;">
+                        Pour modifier la configuration, éditez le fichier <code style="background: rgba(0,0,0,0.3); padding: 2px 4px; border-radius: 3px;">data/config/bot_config.json</code> directement sur le serveur, puis utilisez les presets ou redémarrez le bot pour appliquer les changements.
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button id="refresh-bot-config-btn" style="
+                    background: linear-gradient(135deg, #10b981, #059669);
+                    border: none;
+                    border-radius: 8px;
+                    color: #fff;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                ">
+                    🔄 Recharger Config
+                </button>
+                <button id="close-bot-config-footer-btn" style="
+                    background: rgba(255, 255, 255, 0.1);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 8px;
+                    color: #fff;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                    font-weight: 600;
+                ">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>

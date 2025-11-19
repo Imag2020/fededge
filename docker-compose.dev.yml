@@ -1,0 +1,82 @@
+# ============================================================================
+# docker-compose.dev.yml - Configuration pour développement avec hot reload
+# ============================================================================
+#
+# Utilisation:
+#   docker compose -f docker-compose.dev.yml up -d
+#
+# Avantages:
+#   - Code source monté en volume → Modifications sans rebuild
+#   - FastAPI hot reload activé → Redémarrage automatique
+#   - Logs et données persistantes
+#
+# Limitations:
+#   - Utilisé pour développement uniquement (pas pour production)
+#   - Nécessite que l'image soit déjà buildée une fois
+#   - Debugging plus compliqué (dans le conteneur)
+#
+# ============================================================================
+
+services:
+  fedgesrv:
+    # Build initial (nécessaire une seule fois)
+    build:
+      context: .
+      dockerfile: Dockerfile.cpu-full
+    image: fedgesrv:dev
+    network_mode: host
+    restart: unless-stopped
+
+    # VOLUMES - CODE SOURCE MONTÉ
+    volumes:
+      # ✅ Données persistantes (comme docker-compose.yml)
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - ./cache:/app/cache
+      - ./config:/app/config
+
+      # 🆕 CODE SOURCE MONTÉ (changements sans rebuild!)
+      - ./backend:/app/backend
+      - ./frontend:/app/frontend
+
+      # Scripts et config
+      - ./run_server.py:/app/run_server.py
+      - ./start_llamacpp.sh:/app/start_llamacpp.sh
+      - ./entrypoint.sh:/app/entrypoint.sh
+
+      # Config files (si tu veux les modifier sans rebuild)
+      # - ./requirements.txt:/app/requirements.txt  # ⚠️ Rebuild nécessaire si modifié
+
+    # Environment variables pour développement
+    environment:
+      - PYTHONUNBUFFERED=1          # Pas de buffering des logs Python
+      - RELOAD=true                 # Flag custom (si ton entrypoint.sh le supporte)
+      - LOG_LEVEL=DEBUG             # Plus de logs en dev
+
+    # ⚡ HOT RELOAD activé via uvicorn --reload
+    command: >
+      bash -c "
+      echo '🔧 Mode développement avec hot reload activé';
+
+      # Démarrer llama.cpp servers en background
+      ./start_llamacpp.sh &
+
+      # Attendre que llama.cpp démarre (optionnel)
+      sleep 5;
+
+      # Activer le venv et démarrer FastAPI avec hot reload
+      source /app/venv/bin/activate &&
+      uvicorn backend.main:app \
+        --reload \
+        --host 0.0.0.0 \
+        --port 8000 \
+        --log-level debug
+      "
+
+    # Healthcheck (optionnel)
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
