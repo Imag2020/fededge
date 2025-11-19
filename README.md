@@ -49,8 +49,16 @@ python3 -m venv .venv && source .venv/bin/activate
 # 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. Start the local LLM server (for chat & embeddings) or Config external LLM/embeddings (ollama, OpenAi .. in Settings)
+# 4.0  Download local Model in ./models
+
+mkdir -p models && \
+wget -O models/gemma-3-4b-it-Q4_K_M.gguf \
+  https://huggingface.co/unsloth/gemma-3-4b-it-GGUF/resolve/main/gemma-3-4b-it-Q4_K_M.gguf
+
+# 4.1 Start the local LLM server (for chat & embeddings) 
 ./start_llamacpp.sh
+
+4.3 Please note that you can use external LLM/embeddings models via external API  (ollama, OpenAi .. etc) available in Settings menu
 
 # 5. Launch the backend
 python run_server.py
