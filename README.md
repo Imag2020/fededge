@@ -29,7 +29,7 @@ docker run -d \
   -p 9001:9001 \
   -p 9002:9002 \
   -v $(pwd)/data:/app/data \
-  imedmag2020/fededge:latest
+  imedmag2020/fededge:v0.1.0
 ```
 
 Then open [http://localhost:8000](http://localhost:8000) in your browser.
