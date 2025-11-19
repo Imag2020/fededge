@@ -18,7 +18,7 @@ Built for traders, researchers, and AI enthusiasts, FedEdge offers:
 
 ## 🚀 Quick Start
 
-### 🧩 Run with Docker
+### 🧩 Run with Docker (you can install docker it with :  curl -fsSL https://get.docker.com | sudo sh)
 FedEdge is available as a ready-to-run Docker image.  
 Pull and start the **beta** version in one command:
 
