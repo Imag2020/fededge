@@ -1,4 +1,4 @@
-# 🧠 **FedEdge v1.0.1 (Beta)**
+# 🧠 **FedEdge v0.1.0 (Beta)**
 ### *Decentralized AI Copilot for Crypto, DeFi, and Beyond*
 
 **FedEdge** is an **AI-powered cryptocurrency and DeFi copilot** that combines **real-time market intelligence**, **autonomous trading agents**, and **federated learning on edge devices** — bringing privacy-preserving intelligence to every user.
