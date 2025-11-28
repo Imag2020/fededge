@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>FedEdge - Dashboard Trading</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🐝</div>
+                <span>FedEdge</span>
+            </div>
+            
+            <div class="status-bar">
+                <div class="status-item">
+                    <span class="status-label">Network Nodes</span>
+                    <span class="status-value" id="network-nodes">247</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Collective IQ</span>
+                    <span class="status-value" id="collective-iq">94.2%</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">24h Accuracy</span>
+                    <span class="status-value" id="accuracy-24h">87.3%</span>
+                </div>
+                <!-- Boutons Mon Edge Bot -->
+                <button id="logs-btn" style="
+                    background: linear-gradient(135deg, #64748b, #475569);
+                    border: none;
+                    border-radius: 6px;
+                    padding: 6px 12px;
+                    color: white;
+                    font-size: 12px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    transition: all 0.2s;
+                    font-weight: 600;
+                    margin-left: 12px;
+                " onmouseover="this.style.background='linear-gradient(135deg, #475569, #334155)'" 
+                   onmouseout="this.style.background='linear-gradient(135deg, #64748b, #475569)'"
+                   title="Consulter les logs du système">
+                    📋 Logs
+                </button>
+                <button id="wallets-btn" style="
+                    background: linear-gradient(135deg, #059669, #047857);
+                    border: none;
+                    border-radius: 6px;
+                    padding: 6px 12px;
+                    color: white;
+                    font-size: 12px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    transition: all 0.2s;
+                    font-weight: 600;
+                    margin-left: 8px;
+                " onmouseover="this.style.background='linear-gradient(135deg, #047857, #065f46)'" 
+                   onmouseout="this.style.background='linear-gradient(135deg, #059669, #047857)'"
+                   title="Gérer les wallets">
+                    💼 Wallets
+                </button>
+                <button id="scheduler-config-btn" style="
+                    background: linear-gradient(135deg, #d97706, #b45309);
+                    border: none;
+                    border-radius: 6px;
+                    padding: 6px 12px;
+                    color: white;
+                    font-size: 12px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    transition: all 0.2s;
+                    font-weight: 600;
+                    margin-left: 8px;
+                " onmouseover="this.style.background='linear-gradient(135deg, #b45309, #92400e)'" 
+                   onmouseout="this.style.background='linear-gradient(135deg, #d97706, #b45309)'"
+                   title="Configuration du scheduler">
+                    ⚙️ Config
+                </button>
+                <button id="debug-console-btn" style="
+                    background: linear-gradient(135deg, #dc2626, #b91c1c);
+                    border: none;
+                    border-radius: 6px;
+                    padding: 6px 12px;
+                    color: white;
+                    font-size: 12px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    transition: all 0.2s;
+                    font-weight: 600;
+                    margin-left: 8px;
+                " onmouseover="this.style.background='linear-gradient(135deg, #b91c1c, #991b1b)'" 
+                   onmouseout="this.style.background='linear-gradient(135deg, #dc2626, #b91c1c)'"
+                   title="Console de debug">
+                    🐛 Debug <span id="debug-counter" style="background: #fbbf24; color: #1f2937; border-radius: 50%; padding: 2px 6px; font-size: 10px; margin-left: 5px;">0</span>
+                </button>
+                <button id="settings-btn" style="
+                    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                    border: none;
+                    border-radius: 8px;
+                    padding: 8px 16px;
+                    color: white;
+                    font-size: 14px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    transition: all 0.2s;
+                    font-weight: 600;
+                    margin-left: 16px;
+                " onmouseover="this.style.background='linear-gradient(135deg, #4f46e5, #7c3aed)'" 
+                   onmouseout="this.style.background='linear-gradient(135deg, #6366f1, #8b5cf6)'"
+                   title="Configuration du système">
+                    ⚙️ Settings
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="sidebar-menu">
+            <a href="#" class="sidebar-item active" data-page="dashboard">
+                <span class="sidebar-icon">🏠</span>
+                <span class="sidebar-label">Dashboard</span>
+            </a>
+            <a href="#" class="sidebar-item" data-page="simulations">
+                <span class="sidebar-icon">📊</span>
+                <span class="sidebar-label">Simulations</span>
+            </a>
+            <a href="#" class="sidebar-item" data-page="bots">
+                <span class="sidebar-icon">🤖</span>
+                <span class="sidebar-label">Bots</span>
+            </a>
+            <a href="#" class="sidebar-item" data-page="wallets">
+                <span class="sidebar-icon">💼</span>
+                <span class="sidebar-label">Wallets</span>
+            </a>
+            <a href="#" class="sidebar-item" data-page="collective-iq">
+                <span class="sidebar-icon">🌍</span>
+                <span class="sidebar-label">Collective IQ</span>
+            </a>
+            <a href="#" class="sidebar-item" data-page="settings">
+                <span class="sidebar-icon">⚙️</span>
+                <span class="sidebar-label">Settings</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Dashboard Content (default) -->
+        <div class="content-page active" id="dashboard-page">
+            <div class="main-container">
+                <!-- Ligne 1: Market Cap + Edge Node -->
+                <div class="market-signals-row">
+            <!-- Market Cap Visualization -->
+            <div class="card">
+                <div class="card-header">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <h2 class="card-title">📊 Market Cap Visualization</h2>
+                        <button id="finance-market-btn" style="
+                            background: linear-gradient(135deg, #f59e0b, #d97706);
+                            border: none;
+                            border-radius: 8px;
+                            padding: 6px 10px;
+                            color: white;
+                            font-size: 14px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
+                            transition: all 0.2s;
+                            font-weight: 600;
+                        " onmouseover="this.style.background='linear-gradient(135deg, #d97706, #b45309)'"
+                           onmouseout="this.style.background='linear-gradient(135deg, #f59e0b, #d97706)'"
+                           title="Afficher l'état du marché financier">
+                            💹 Market
+                        </button>
+                    </div>
+                    <div style="font-size: 12px; color: #9ca3af;">
+                        Taille proportionnelle à la capitalisation boursière
+                    </div>
+                </div>
+                <div id="market-cap-visualization" style="height: 300px; padding: 16px;">
+                    <div style="text-align: center; color: #9ca3af; padding: 50px;">
+                        Chargement de la visualisation market cap...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mon Edge Bot -->
+            <div class="card edge-status">
+                <h2 class="card-title">🤖 Mon Edge Bot</h2>
+
+                <div class="device-info">
+                    <div class="device-header">
+                        <span class="device-name">Trading Bot - Instance #142</span>
+                        <div class="device-status">
+                            <div class="status-dot"></div>
+                            <span>Online</span>
+                        </div>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <div class="metric-label">CPU Usage</div>
+                            <div class="metric-value">34%</div>
+                        </div>
+
+                        <div class="metric-item">
+                            <div class="metric-label">Memory</div>
+                            <div class="metric-value">2.1/4GB</div>
+                        </div>
+
+                        <div class="metric-item">
+                            <div class="metric-label">Bot Load</div>
+                            <div class="metric-value">67%</div>
+                        </div>
+
+                        <div class="metric-item">
+                            <div class="metric-label">Uptime</div>
+                            <div class="metric-value">7d 14h</div>
+                        </div>
+
+                        <div class="metric-item">
+                            <div class="metric-label">P&L Today</div>
+                            <div class="metric-value">$47.32</div>
+                        </div>
+
+                        <div class="metric-item">
+                            <div class="metric-label">Rank</div>
+                            <div class="metric-value">#156/1.2k</div>
+                        </div>
+
+                        <div class="metric-item">
+                            <div class="metric-label">Signals</div>
+                            <div class="metric-value">92%</div>
+                        </div>
+
+                        <div class="metric-item">
+                            <div class="metric-label">Status</div>
+                            <div class="metric-value">Connected</div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Ligne 2: Prix + News (largeur égale) -->
+        <div class="prices-news-row">
+            <!-- Prix crypto -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">💰 Prix Crypto en Temps Réel</h2>
+                    <div style="font-size: 12px; color: #9ca3af;">
+                        Dernière mise à jour: <span id="prices-last-update">Jamais</span>
+                    </div>
+                </div>
+                <div id="crypto-prices" style="display: grid; gap: 12px; max-height: 350px; overflow-y: auto;">
+                    <div style="text-align: center; color: #9ca3af; padding: 20px;">
+                        Chargement des prix...
+                    </div>
+                </div>
+            </div>
+
+            <!-- News Feed -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">📰 News Feed</h2>
+                    <div style="font-size: 12px; color: #9ca3af;">
+                        Dernière mise à jour: <span id="news-last-update">Jamais</span>
+                    </div>
+                </div>
+                <div id="news-feed" style="max-height: 350px; overflow-y: auto;">
+                    <div style="text-align: center; color: #9ca3af; padding: 40px;">
+                        Chargement des news...
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div>
+
+        <!-- Placeholder pages for other menu items -->
+        <div class="content-page" id="simulations-page">
+            <div class="main-container">
+                <div class="card wallet-large" style="grid-column: 1 / -1; max-width: none;">
+                    <div class="card-header">
+                        <h2 class="card-title">🎮 Simulations de Trading</h2>
+                        <div class="learning-indicator">
+                            <div class="pulse-dot" style="background: #10b981;"></div>
+                            <span>Active Trading...</span>
+                        </div>
+                    </div>
+
+                    <div class="wallet-grid">
+                        <!-- Section Simulations avec liste expandable -->
+                        <div class="simulations-section">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <h4 style="color: #fff; margin: 0; font-size: 16px;">📊 Mes Simulations</h4>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <span style="font-size: 12px; color: #9ca3af;" id="simulations-count">Chargement...</span>
+                                    <button id="add-simulation-main-btn" style="
+                                        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+                                        border: none;
+                                        border-radius: 6px;
+                                        color: #fff;
+                                        padding: 4px 8px;
+                                        cursor: pointer;
+                                        font-size: 12px;
+                                        font-weight: 500;
+                                        transition: all 0.2s ease;
+                                    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                        + Ajouter
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="simulations-list" style="max-height: 400px; overflow-y: auto;">
+                                <!-- Les simulations seront chargées ici dynamiquement -->
+                                <div style="text-align: center; color: #9ca3af; padding: 40px; font-size: 14px;">
+                                    Chargement des simulations...<br>
+                                    <span style="font-size: 12px; opacity: 0.7;">Vos simulations de trading apparaîtront ici</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-page" id="bots-page">
+            <div class="main-container">
+                <!-- Bot de Trading -->
+                <div class="card signals-compact" style="grid-column: 1 / -1; max-width: none;">
+                    <div class="card-header">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <h2 class="card-title">🤖 Bot de Trading</h2>
+                            <button id="bot-start-stop-btn" style="
+                                background: linear-gradient(135deg, #ef4444, #dc2626);
+                                border: none;
+                                border-radius: 6px;
+                                padding: 4px 8px;
+                                color: white;
+                                font-size: 11px;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                gap: 3px;
+                                transition: all 0.2s;
+                                font-weight: 600;
+                            " title="Démarrer/Arrêter le bot">
+                                ⏸️ Arrêt
+                            </button>
+                            <button id="trading-bot-scan-btn" style="
+                                background: linear-gradient(135deg, #10b981, #059669);
+                                border: none;
+                                border-radius: 6px;
+                                padding: 4px 8px;
+                                color: white;
+                                font-size: 11px;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                gap: 3px;
+                                transition: all 0.2s;
+                                font-weight: 600;
+                            " title="Lancer un scan manuel">
+                                🔍 Scan
+                            </button>
+                            <button id="trading-stats-btn" style="
+                                background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+                                border: none;
+                                border-radius: 6px;
+                                padding: 4px 8px;
+                                color: white;
+                                font-size: 11px;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                gap: 3px;
+                                transition: all 0.2s;
+                                font-weight: 600;
+                            " title="Voir les statistiques de trading">
+                                📊 Stats
+                            </button>
+                            <button id="bot-config-btn" style="
+                                background: linear-gradient(135deg, #f59e0b, #d97706);
+                                border: none;
+                                border-radius: 6px;
+                                padding: 4px 8px;
+                                color: white;
+                                font-size: 11px;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                gap: 3px;
+                                transition: all 0.2s;
+                                font-weight: 600;
+                            " title="Configuration du bot">
+                                ⚙️ Config
+                            </button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div class="learning-indicator" style="font-size: 11px;">
+                                    <div class="pulse-dot" id="bot-status-indicator" style="width: 8px; height: 8px;"></div>
+                                    <span id="bot-status-text">Initialisation...</span>
+                                </div>
+                                <div style="font-size: 10px; color: #6b7280;" id="bot-scan-timer">
+                                    Prochain scan: --s
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="font-size: 10px; color: #9ca3af;" id="signals-info">
+                                    0 signal
+                                </div>
+                                <div style="font-size: 10px; color: #9ca3af;" id="bot-winrate-mini">
+                                    WR: 0%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="signal-grid-compact" id="signals-container">
+                        <!-- État du bot -->
+                        <div id="bot-state-display" style="
+                            background: rgba(0, 0, 0, 0.4);
+                            border-radius: 6px;
+                            padding: 12px;
+                            margin-bottom: 12px;
+                            border-left: 3px solid #6b7280;
+                        ">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-size: 13px; font-weight: 600; color: #fff;">État du Bot</div>
+                                <div id="bot-mode-display" style="font-size: 11px; color: #f59e0b; background: rgba(245, 158, 11, 0.1); padding: 2px 6px; border-radius: 4px;">
+                                    Mode: Default
+                                </div>
+                            </div>
+                            <div id="bot-last-action" style="font-size: 12px; color: #9ca3af; margin-bottom: 4px;">
+                                Dernière action: En attente...
+                            </div>
+                            <div id="bot-next-action" style="font-size: 11px; color: #6b7280;">
+                                Prochaine action: Scan automatique
+                            </div>
+                        </div>
+
+                        <!-- Message par défaut quand pas de signaux -->
+                        <div id="no-signals-message" style="
+                            text-align: center;
+                            color: #9ca3af;
+                            padding: 20px;
+                            font-size: 13px;
+                            background: rgba(156, 163, 175, 0.05);
+                            border-radius: 6px;
+                            border: 1px dashed rgba(156, 163, 175, 0.3);
+                        ">
+                            <div style="margin-bottom: 8px;">🤖</div>
+                            <div>Bot en attente de signaux...</div>
+                            <div style="font-size: 10px; color: #6b7280; margin-top: 4px;">
+                                Prochain scan automatique dans <span id="countdown-timer">--</span>s
+                            </div>
+                        </div>
+
+                        <!-- Signaux en format compact (caché par défaut) -->
+                        <div class="signal-compact-list" id="signals-compact" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination compacte -->
+                <div class="signal-pagination-compact" id="signals-pagination" style="display: none;">
+                    <button class="pagination-btn-small" id="signals-prev-page" disabled>←</button>
+                    <span class="pagination-info-small" id="signals-pagination-info">1/1</span>
+                    <button class="pagination-btn-small" id="signals-next-page" disabled>→</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-page" id="wallets-page">
+            <div class="page-placeholder">
+                <h2>💼 Wallets</h2>
+                <p>Gestion des portefeuilles...</p>
+            </div>
+        </div>
+
+        <div class="content-page" id="collective-iq-page">
+            <div class="page-placeholder">
+                <h2>🌍 Collective IQ</h2>
+                <p>Intelligence collective du réseau...</p>
+            </div>
+        </div>
+
+        <div class="content-page" id="settings-page">
+            <div class="page-placeholder">
+                <h2>⚙️ Settings</h2>
+                <p>Configuration du système...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js?v=2025-09-17-15-35"></script>
+</body>
+</html>

@@ -1,0 +1,382 @@
+            <div class="main-container">
+                <div class="card" style="grid-column: 1 / -1; max-width: none;">
+                    <div class="card-header">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <h2 class="card-title">🧠 Knowledge Base & RAG System</h2>
+                            <button id="knowledge-page-refresh-btn" style="
+                                background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+                                border: none;
+                                border-radius: 6px;
+                                padding: 4px 8px;
+                                color: white;
+                                font-size: 11px;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                gap: 3px;
+                                transition: all 0.2s;
+                                font-weight: 600;
+                            " title="Refresh statistics">
+                                🔄 Refresh
+                            </button>
+                            <button id="knowledge-page-search-btn" style="
+                                background: linear-gradient(135deg, #10b981, #059669);
+                                border: none;
+                                border-radius: 6px;
+                                padding: 4px 8px;
+                                color: white;
+                                font-size: 11px;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                gap: 3px;
+                                transition: all 0.2s;
+                                font-weight: 600;
+                            " title="Search knowledge base">
+                                🔍 Search
+                            </button>
+                            <button id="knowledge-page-add-document-btn" style="
+                                background: linear-gradient(135deg, #f59e0b, #d97706);
+                                border: none;
+                                border-radius: 6px;
+                                padding: 4px 8px;
+                                color: white;
+                                font-size: 11px;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                gap: 3px;
+                                transition: all 0.2s;
+                                font-weight: 600;
+                            " title="Add des documents à la base RAG">
+                                📄 Add Documents
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Stats Overview -->
+                        <div style="
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                            gap: 16px;
+                            margin-bottom: 24px;
+                        ">
+                            <!-- News Database Stats -->
+                            <div style="
+                                background: rgba(16, 185, 129, 0.1);
+                                border: 1px solid rgba(16, 185, 129, 0.3);
+                                border-radius: 8px;
+                                padding: 16px;
+                            ">
+                                <h4 style="color: #10b981; margin: 0 0 12px 0; font-size: 14px; display: flex; align-items: center; gap: 6px;">
+                                    📰 News Database
+                                </h4>
+                                <div id="knowledge-page-news-db-stats">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span style="color: #9ca3af; font-size: 12px;">Total Articles:</span>
+                                        <span id="knowledge-page-total-articles-count" style="color: #fff; font-size: 12px; font-weight: 600;">-</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span style="color: #9ca3af; font-size: 12px;">Recent (7d):</span>
+                                        <span id="knowledge-page-recent-articles-count" style="color: #10b981; font-size: 12px; font-weight: 600;">-</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span style="color: #9ca3af; font-size: 12px;">Last Updated:</span>
+                                        <span id="knowledge-page-news-last-updated" style="color: #6b7280; font-size: 11px;">-</span>
+                                    </div>
+                                    <div style="margin-top: 12px;">
+                                        <span style="color: #9ca3af; font-size: 12px;">Sources:</span>
+                                        <div style="display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap;">
+                                            <span style="background: rgba(16, 185, 129, 0.2); color: #10b981; font-size: 10px; padding: 2px 6px; border-radius: 4px;">Cointelegraph</span>
+                                            <span style="background: rgba(16, 185, 129, 0.2); color: #10b981; font-size: 10px; padding: 2px 6px; border-radius: 4px;">CoinDesk</span>
+                                            <span style="background: rgba(16, 185, 129, 0.2); color: #10b981; font-size: 10px; padding: 2px 6px; border-radius: 4px;">The Block</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Training Datasets Stats -->
+                            <div style="
+                                background: rgba(245, 158, 11, 0.1);
+                                border: 1px solid rgba(245, 158, 11, 0.3);
+                                border-radius: 8px;
+                                padding: 16px;
+                            ">
+                                <h4 style="color: #f59e0b; margin: 0 0 12px 0; font-size: 14px; display: flex; align-items: center; gap: 6px;">
+                                    🎯 Training Datasets
+                                </h4>
+                                <div id="knowledge-page-datasets-stats">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                        <span style="color: #9ca3af; font-size: 12px;">World State:</span>
+                                        <span id="knowledge-page-world-state-sessions" style="color: #fff; font-size: 12px; font-weight: 600;">-</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                        <span style="color: #9ca3af; font-size: 12px;">Candidates:</span>
+                                        <span id="knowledge-page-candidates-sessions" style="color: #fff; font-size: 12px; font-weight: 600;">-</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span style="color: #9ca3af; font-size: 12px;">Decider:</span>
+                                        <span id="knowledge-page-decider-sessions" style="color: #fff; font-size: 12px; font-weight: 600;">-</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span style="color: #9ca3af; font-size: 12px;">Last Updated:</span>
+                                        <span id="knowledge-page-datasets-last-updated" style="color: #6b7280; font-size: 11px;">-</span>
+                                    </div>
+                                    <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(245, 158, 11, 0.2);">
+                                        <span style="color: #9ca3af; font-size: 11px;">Model: embeddinggemma-300M</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RAG Capabilities -->
+                        <div style="
+                            background: rgba(59, 130, 246, 0.1);
+                            border: 1px solid rgba(59, 130, 246, 0.3);
+                            border-radius: 8px;
+                            padding: 16px;
+                            margin-bottom: 16px;
+                        ">
+                            <h4 style="color: #3b82f6; margin: 0 0 12px 0; font-size: 14px;">
+                                ⚡ Capacités RAG Disponibles
+                            </h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px;">
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <span style="color: #10b981;">✅</span>
+                                    <span style="color: #9ca3af; font-size: 12px;">Recherche Sémantique</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <span style="color: #10b981;">✅</span>
+                                    <span style="color: #9ca3af; font-size: 12px;">Récupération News</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <span style="color: #10b981;">✅</span>
+                                    <span style="color: #9ca3af; font-size: 12px;">Génération Contexte</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <span style="color: #10b981;">✅</span>
+                                    <span style="color: #9ca3af; font-size: 12px;">Tracking Citations</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <span style="color: #10b981;">✅</span>
+                                    <span style="color: #9ca3af; font-size: 12px;">Mises à Jour Temps Réel</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Search Interface -->
+                        <div id="knowledge-page-search-interface" style="display: none;">
+                            <div style="
+                                background: rgba(0, 0, 0, 0.2);
+                                border: 1px solid rgba(255, 255, 255, 0.1);
+                                border-radius: 8px;
+                                padding: 16px;
+                                margin-bottom: 16px;
+                            ">
+                                <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                                    <input type="text" id="knowledge-page-search-input" placeholder="Rechercher dans la base de connaissances crypto..." style="
+                                        flex: 1;
+                                        padding: 8px 12px;
+                                        background: rgba(0, 0, 0, 0.3);
+                                        border: 1px solid rgba(255, 255, 255, 0.2);
+                                        border-radius: 6px;
+                                        color: #fff;
+                                        font-size: 14px;
+                                    ">
+                                    <button id="knowledge-page-search-submit" style="
+                                        background: linear-gradient(135deg, #10b981, #059669);
+                                        border: none;
+                                        border-radius: 6px;
+                                        padding: 8px 16px;
+                                        color: white;
+                                        font-size: 14px;
+                                        cursor: pointer;
+                                        font-weight: 600;
+                                    ">
+                                        Rechercher
+                                    </button>
+                                </div>
+                                <div id="knowledge-page-search-results"></div>
+                            </div>
+                        </div>
+
+                        <!-- Document Upload Interface -->
+                        <div id="knowledge-page-upload-interface" style="display: none;">
+                            <div style="
+                                background: rgba(0, 0, 0, 0.2);
+                                border: 1px solid rgba(255, 255, 255, 0.1);
+                                border-radius: 8px;
+                                padding: 16px;
+                                margin-bottom: 16px;
+                            ">
+                                <h4 style="color: #f59e0b; margin: 0 0 16px 0; font-size: 16px;">📄 Add des Documents à la Base RAG</h4>
+
+                                <!-- Upload Tabs -->
+                                <div style="display: flex; border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 16px;">
+                                    <button id="upload-tab-text" class="upload-tab active" style="
+                                        background: none;
+                                        border: none;
+                                        color: #f59e0b;
+                                        padding: 8px 16px;
+                                        cursor: pointer;
+                                        font-size: 14px;
+                                        border-bottom: 2px solid #f59e0b;
+                                    ">✏️ Texte</button>
+                                    <button id="upload-tab-file" class="upload-tab" style="
+                                        background: none;
+                                        border: none;
+                                        color: #9ca3af;
+                                        padding: 8px 16px;
+                                        cursor: pointer;
+                                        font-size: 14px;
+                                        border-bottom: 2px solid transparent;
+                                    ">📁 Fichier</button>
+                                    <button id="upload-tab-url" class="upload-tab" style="
+                                        background: none;
+                                        border: none;
+                                        color: #9ca3af;
+                                        padding: 8px 16px;
+                                        cursor: pointer;
+                                        font-size: 14px;
+                                        border-bottom: 2px solid transparent;
+                                    ">🌐 URL</button>
+                                </div>
+
+                                <!-- Text Upload -->
+                                <div id="upload-content-text" class="upload-content">
+                                    <div style="margin-bottom: 12px;">
+                                        <label style="color: #9ca3af; font-size: 12px; margin-bottom: 4px; display: block;">Titre du document</label>
+                                        <input type="text" id="text-title" placeholder="Ex: Guide DeFi 2025" style="
+                                            width: 100%;
+                                            padding: 8px 12px;
+                                            background: rgba(0, 0, 0, 0.3);
+                                            border: 1px solid rgba(255, 255, 255, 0.2);
+                                            border-radius: 6px;
+                                            color: #fff;
+                                            font-size: 14px;
+                                        ">
+                                    </div>
+                                    <div style="margin-bottom: 12px;">
+                                        <label style="color: #9ca3af; font-size: 12px; margin-bottom: 4px; display: block;">Contenu</label>
+                                        <textarea id="text-content" placeholder="Collez votre contenu ici..." style="
+                                            width: 100%;
+                                            min-height: 150px;
+                                            padding: 8px 12px;
+                                            background: rgba(0, 0, 0, 0.3);
+                                            border: 1px solid rgba(255, 255, 255, 0.2);
+                                            border-radius: 6px;
+                                            color: #fff;
+                                            font-size: 14px;
+                                            resize: vertical;
+                                        "></textarea>
+                                    </div>
+                                    <button id="upload-text-submit" style="
+                                        background: linear-gradient(135deg, #f59e0b, #d97706);
+                                        border: none;
+                                        border-radius: 6px;
+                                        padding: 8px 16px;
+                                        color: white;
+                                        font-size: 14px;
+                                        cursor: pointer;
+                                        font-weight: 600;
+                                    ">📝 Add le Texte</button>
+                                </div>
+
+                                <!-- File Upload -->
+                                <div id="upload-content-file" class="upload-content" style="display: none;">
+                                    <div style="margin-bottom: 12px;">
+                                        <label style="color: #9ca3af; font-size: 12px; margin-bottom: 4px; display: block;">
+                                            Fichier (PDF, TXT, DOC, DOCX)
+                                        </label>
+                                        <div style="
+                                            border: 2px dashed rgba(255, 255, 255, 0.3);
+                                            border-radius: 8px;
+                                            padding: 20px;
+                                            text-align: center;
+                                            background: rgba(0, 0, 0, 0.2);
+                                        ">
+                                            <input type="file" id="file-input" accept=".pdf,.txt,.doc,.docx" style="display: none;">
+                                            <div id="file-drop-zone" style="cursor: pointer;">
+                                                <div style="color: #9ca3af; margin-bottom: 8px;">📁</div>
+                                                <div style="color: #9ca3af; font-size: 14px;">Cliquez ou glissez un fichier ici</div>
+                                                <div style="color: #6b7280; font-size: 12px; margin-top: 4px;">PDF, TXT, DOC, DOCX (max 10MB)</div>
+                                            </div>
+                                            <div id="file-selected" style="display: none; color: #10b981; font-size: 14px;"></div>
+                                        </div>
+                                    </div>
+                                    <button id="upload-file-submit" style="
+                                        background: linear-gradient(135deg, #f59e0b, #d97706);
+                                        border: none;
+                                        border-radius: 6px;
+                                        padding: 8px 16px;
+                                        color: white;
+                                        font-size: 14px;
+                                        cursor: pointer;
+                                        font-weight: 600;
+                                        opacity: 0.5;
+                                    " disabled>📄 Traiter le Fichier</button>
+                                </div>
+
+                                <!-- URL Upload -->
+                                <div id="upload-content-url" class="upload-content" style="display: none;">
+                                    <div style="margin-bottom: 12px;">
+                                        <label style="color: #9ca3af; font-size: 12px; margin-bottom: 4px; display: block;">URL du site web</label>
+                                        <input type="url" id="url-input" placeholder="https://example.com/article-crypto" style="
+                                            width: 100%;
+                                            padding: 8px 12px;
+                                            background: rgba(0, 0, 0, 0.3);
+                                            border: 1px solid rgba(255, 255, 255, 0.2);
+                                            border-radius: 6px;
+                                            color: #fff;
+                                            font-size: 14px;
+                                        ">
+                                    </div>
+                                    <div style="margin-bottom: 12px;">
+                                        <label style="color: #9ca3af; font-size: 12px; margin-bottom: 4px; display: block;">
+                                            <input type="checkbox" id="url-convert-pdf" style="margin-right: 6px;">
+                                            Convertir en PDF avant traitement
+                                        </label>
+                                    </div>
+                                    <button id="upload-url-submit" style="
+                                        background: linear-gradient(135deg, #f59e0b, #d97706);
+                                        border: none;
+                                        border-radius: 6px;
+                                        padding: 8px 16px;
+                                        color: white;
+                                        font-size: 14px;
+                                        cursor: pointer;
+                                        font-weight: 600;
+                                    ">🌐 Traiter l'URL</button>
+                                </div>
+
+                                <!-- Progress and Status -->
+                                <div id="upload-progress" style="display: none; margin-top: 16px;">
+                                    <div style="
+                                        background: rgba(139, 92, 246, 0.1);
+                                        border: 1px solid rgba(139, 92, 246, 0.3);
+                                        border-radius: 6px;
+                                        padding: 12px;
+                                    ">
+                                        <div style="color: #8b5cf6; font-size: 14px; margin-bottom: 8px;">
+                                            <span id="upload-status-text">Traitement en cours...</span>
+                                        </div>
+                                        <div style="
+                                            background: rgba(0, 0, 0, 0.3);
+                                            border-radius: 4px;
+                                            height: 6px;
+                                            overflow: hidden;
+                                        ">
+                                            <div id="upload-progress-bar" style="
+                                                background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+                                                height: 100%;
+                                                width: 0%;
+                                                transition: width 0.3s ease;
+                                            "></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

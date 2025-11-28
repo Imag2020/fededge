@@ -1,0 +1,196 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Configuration sensible
+config/user_secrets.json
+config/api_keys.json
+*.private.json
+
+# =============================================================================
+# FedEdge Specific
+# =============================================================================
+
+# Jupyter Notebooks (dev only)
+*.ipynb
+notebooks/
+
+# Models (too large for Git - download separately)
+models/*.gguf
+models/*.bin
+
+# Databases (user data - never commit)
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+data/
+backend/db/*.db
+backend/bot/*.db
+datasets/*.db
+
+# Logs & Runtime
+logs/
+*.log
+nohup.out
+run/
+*.pid
+
+# Cache
+cache/
+*.cache
+.scrapy/
+
+# Build artifacts
+build.log
+build_clean.log
+*.tar.gz
+
+# Data backups (dev)
+dev_data_backup_*/
+logs_export/
+
+# Temporary/Debug scripts (dev only)
+ULTIMATE_*.sh
+FIX_*.sh
+HOST_*.sh
+RESTART_*.sh
+TOTAL_*.sh
+LAUNCH_*.sh
+EMERGENCY_*.sh
+FINAL_*.sh
+CHAT_*.sh
+CORRECT_*.sh
+rebuild.sh
+debug.sh
+drop.sh
+*_REBUILD.sh
+*_FIX.sh
+
+# Docker build context (exclude from repo)
+.dockerignore
+
+# Config (mounted as volume, user-specific)
+config/*.json
+
+# llama.cpp source (compiled in Docker, not needed in repo)
+llama.cpp/

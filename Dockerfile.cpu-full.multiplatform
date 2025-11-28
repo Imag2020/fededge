@@ -1,0 +1,116 @@
+# ============================================================================
+# STAGE 1: COMPILATION llama.cpp → /out/bin/llama-server
+# Compilation avec BLAS (OpenBLAS) pour optimisation CPU
+FROM debian:bookworm-slim AS build
+
+# Arguments pour la plateforme (détecté automatiquement par buildx)
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+
+# Configuration apt pour éviter les problèmes en émulation QEMU
+# Ces options rendent apt-get plus robuste pour les builds multi-plateforme
+RUN echo 'Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries \
+    && echo 'Acquire::http::Timeout "10";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'Acquire::https::Timeout "10";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'APT::Get::Assume-Yes "true";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'APT::Install-Suggests "false";' >> /etc/apt/apt.conf.d/80-retries
+
+# Installer les dépendances de build + OpenBLAS
+# Utilisation de -o Acquire::ForceIPv4=true pour éviter les problèmes DNS en émulation
+RUN apt-get update -o Acquire::ForceIPv4=true && \
+    apt-get install -y -o Acquire::ForceIPv4=true \
+    git \
+    build-essential \
+    cmake \
+    curl \
+    ca-certificates \
+    libopenblas-dev \
+    pkg-config \
+    procps \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt
+
+# Cloner llama.cpp
+RUN git clone --depth 1 https://github.com/ggerganov/llama.cpp.git
+
+WORKDIR /opt/llama.cpp
+
+# Compiler avec OpenBLAS pour optimisation CPU (AMD et ARM compatible)
+# -DGGML_BLAS=ON active BLAS support
+# -DGGML_BLAS_VENDOR=OpenBLAS utilise OpenBLAS
+# -DBUILD_SHARED_LIBS=OFF pour éviter les dépendances dynamiques problématiques
+RUN cmake -B build \
+    -DLLAMA_CURL=OFF \
+    -DGGML_BLAS=ON \
+    -DGGML_BLAS_VENDOR=OpenBLAS \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    && cmake --build build --config Release -j$(nproc)
+
+# Vérifier les dépendances du binaire compilé
+RUN ldd build/bin/llama-server || true
+
+# Copier le binaire compilé
+RUN mkdir -p /out/bin && cp build/bin/llama-server /out/bin/
+
+# ============================================================================
+# STAGE 2: Image finale avec Python + llama-server + bibliothèques runtime
+# Python 3.12 au lieu de 3.13 car le module 'cgi' a été supprimé en 3.13
+FROM python:3.12-slim-bookworm
+
+# Configuration apt pour la stabilité multi-plateforme
+RUN echo 'Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries \
+    && echo 'Acquire::http::Timeout "10";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'Acquire::https::Timeout "10";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'APT::Get::Assume-Yes "true";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'APT::Install-Suggests "false";' >> /etc/apt/apt.conf.d/80-retries
+
+# Installer les bibliothèques runtime nécessaires
+# libopenblas0 : runtime OpenBLAS (requis pour llama-server compilé avec BLAS)
+# libgomp1 : OpenMP runtime (requis pour parallélisation)
+RUN apt-get update -o Acquire::ForceIPv4=true && \
+    apt-get install -y -o Acquire::ForceIPv4=true \
+    libopenblas0 \
+    libgomp1 \
+    curl \
+    ca-certificates \
+    procps \
+    coreutils \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copier tout le code source
+COPY . /app/
+
+# Installer les dépendances Python
+RUN python -m venv /app/venv \
+    && . /app/venv/bin/activate \
+    && pip install --no-cache-dir -U pip \
+    && pip install --no-cache-dir -r requirements.txt
+
+# Copier llama-server compilé avec BLAS depuis l'étape de build
+COPY --from=build /out/bin/llama-server /app/bin/llama-server
+
+# Définir les permissions pour les scripts et créer les dossiers nécessaires
+RUN chmod +x /app/bin/llama-server \
+    && chmod +x /app/start_llamacpp.sh \
+    && chmod +x /app/entrypoint.sh \
+    && mkdir -p /app/logs /app/run /app/cache /app/data \
+    && chmod 777 /app/logs /app/run
+
+# ⚡ Configuration optimisée pour petit modèle 1B
+ENV MODEL_SIZE=1B
+
+# Exposer les ports
+# 8000: API principale (FastAPI)
+# 9001: llama.cpp chat server
+# 9002: llama.cpp embeddings server
+# 9010: API secondaire (si utilisée)
+EXPOSE 8000 9001 9002 9010
+
+# Point d'entrée
+CMD ["/app/entrypoint.sh"]

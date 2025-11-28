@@ -1,0 +1,60 @@
+# ============================================================================
+# Dockerfile GPU Simple - Copie binaire pré-compilé
+# ============================================================================
+# Prérequis: Avoir llama-server compilé avec CUDA dans ./bin-gpu/llama-server
+#
+# Pour compiler llama-server localement:
+#   git clone https://github.com/ggerganov/llama.cpp.git
+#   cd llama.cpp
+#   cmake -B build -DGGML_CUDA=ON && cmake --build build
+#   cp build/bin/llama-server ../fededge/bin-gpu/
+#
+FROM nvidia/cuda:12.2.2-runtime-ubuntu22.04
+
+# Variables d'environnement NVIDIA
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Configuration apt
+RUN echo 'Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries \
+    && echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/80-retries
+
+# Installer Python 3.12
+RUN apt-get update -o Acquire::ForceIPv4=true && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y -o Acquire::ForceIPv4=true \
+    software-properties-common gpg-agent \
+    && add-apt-repository -y ppa:deadsnakes/ppa \
+    && apt-get update -o Acquire::ForceIPv4=true \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y -o Acquire::ForceIPv4=true \
+    python3.12 python3.12-venv python3-pip curl ca-certificates procps \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1
+
+WORKDIR /app
+
+# Copier le code
+COPY . /app/
+
+# Installer dépendances Python
+RUN python3 -m venv /app/venv \
+    && . /app/venv/bin/activate \
+    && pip install --no-cache-dir -U pip \
+    && pip install --no-cache-dir -r requirements.txt
+
+# Copier llama-server pré-compilé avec CUDA
+# Ce fichier doit exister dans bin-gpu/ avant le build
+COPY bin-gpu/llama-server /app/bin/llama-server
+
+# Permissions
+RUN chmod +x /app/bin/llama-server /app/start_llamacpp.sh /app/entrypoint.sh \
+    && mkdir -p /app/logs /app/run /app/cache /app/data \
+    && chmod 777 /app/logs /app/run
+
+ENV MODEL_SIZE=1B
+ENV GPU_LAYERS=auto
+
+EXPOSE 8000 9001 9002 9010
+
+CMD ["/app/entrypoint.sh"]

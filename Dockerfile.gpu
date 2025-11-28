@@ -1,0 +1,142 @@
+# ============================================================================
+# STAGE 1: COMPILATION llama.cpp → /out/bin/llama-server
+# Compilation avec CUDA pour accélération GPU NVIDIA
+# ============================================================================
+FROM nvidia/cuda:12.2.2-devel-ubuntu22.04 AS build
+
+# Arguments pour la plateforme (détecté automatiquement par buildx)
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+
+# Configuration apt pour éviter les problèmes en émulation QEMU
+RUN echo 'Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries \
+    && echo 'Acquire::http::Timeout "10";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'Acquire::https::Timeout "10";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'APT::Get::Assume-Yes "true";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'APT::Install-Suggests "false";' >> /etc/apt/apt.conf.d/80-retries
+
+# Installer les dépendances de build
+# Note: Les images CUDA NVIDIA ont parfois des configurations réseau strictes
+# On utilise -o Acquire::ForceIPv4=true pour éviter les timeouts DNS
+RUN apt-get update -o Acquire::ForceIPv4=true && \
+    apt-get install -y -o Acquire::ForceIPv4=true \
+    git \
+    build-essential \
+    cmake \
+    curl \
+    ca-certificates \
+    pkg-config \
+    procps \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configuration git pour éviter les problèmes de timeout
+RUN git config --global http.postBuffer 524288000 \
+    && git config --global http.lowSpeedLimit 0 \
+    && git config --global http.lowSpeedTime 999999
+
+WORKDIR /opt
+
+# Télécharger llama.cpp (version master)
+RUN curl -L --retry 5 --retry-delay 10 --retry-max-time 120 \
+    --fail --show-error \
+    -o llama.cpp.tar.gz \
+    https://github.com/ggerganov/llama.cpp/archive/refs/heads/master.tar.gz \
+    && echo "Archive téléchargée, vérification..." \
+    && tar -tzf llama.cpp.tar.gz >/dev/null 2>&1 \
+    && echo "Archive valide, extraction..." \
+    && tar -xzf llama.cpp.tar.gz \
+    && mv llama.cpp-master llama.cpp \
+    && rm llama.cpp.tar.gz \
+    && echo "llama.cpp extrait avec succès"
+
+WORKDIR /opt/llama.cpp
+
+# Compiler avec CUDA pour GPU NVIDIA
+# Configuration minimaliste pour éviter les erreurs de compilation
+RUN cmake -B build \
+    -DGGML_CUDA=ON \
+    -DLLAMA_CURL=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    && make -C build -j1 llama-server
+
+# Vérifier les dépendances du binaire compilé
+RUN ldd build/bin/llama-server || true
+
+# Copier le binaire compilé
+RUN mkdir -p /out/bin && cp build/bin/llama-server /out/bin/
+
+# ============================================================================
+# STAGE 2: Image finale avec Python + llama-server + CUDA runtime
+# ============================================================================
+FROM nvidia/cuda:12.2.2-runtime-ubuntu22.04
+
+# Variables d'environnement NVIDIA
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Configuration apt pour la stabilité multi-plateforme
+RUN echo 'Acquire::Retries "3";' > /etc/apt/apt.conf.d/80-retries \
+    && echo 'Acquire::http::Timeout "10";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'Acquire::https::Timeout "10";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'APT::Get::Assume-Yes "true";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/80-retries \
+    && echo 'APT::Install-Suggests "false";' >> /etc/apt/apt.conf.d/80-retries
+
+# Installer Python 3.12 et dépendances
+# Pour Ubuntu 22.04, on utilise le PPA deadsnakes pour Python 3.12
+RUN apt-get update -o Acquire::ForceIPv4=true && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y -o Acquire::ForceIPv4=true \
+    software-properties-common \
+    gpg-agent \
+    && add-apt-repository -y ppa:deadsnakes/ppa \
+    && apt-get update -o Acquire::ForceIPv4=true \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y -o Acquire::ForceIPv4=true \
+    python3.12 \
+    python3.12-venv \
+    python3.12-dev \
+    python3-pip \
+    curl \
+    ca-certificates \
+    procps \
+    coreutils \
+    && rm -rf /var/lib/apt/lists/*
+
+# Créer un lien symbolique pour python3
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1
+
+WORKDIR /app
+
+# Copier tout le code source
+COPY . /app/
+
+# Installer les dépendances Python
+RUN python3 -m venv /app/venv \
+    && . /app/venv/bin/activate \
+    && pip install --no-cache-dir -U pip \
+    && pip install --no-cache-dir -r requirements.txt
+
+# Copier llama-server compilé avec CUDA depuis l'étape de build
+COPY --from=build /out/bin/llama-server /app/bin/llama-server
+
+# Définir les permissions pour les scripts et créer les dossiers nécessaires
+RUN chmod +x /app/bin/llama-server \
+    && chmod +x /app/start_llamacpp.sh \
+    && chmod +x /app/entrypoint.sh \
+    && mkdir -p /app/logs /app/run /app/cache /app/data \
+    && chmod 777 /app/logs /app/run
+
+# Variables d'environnement
+ENV MODEL_SIZE=1B
+ENV GPU_LAYERS=auto
+
+# Exposer les ports
+# 8000: API principale (FastAPI)
+# 9001: llama.cpp chat server
+# 9002: llama.cpp embeddings server
+# 9010: API secondaire (si utilisée)
+EXPOSE 8000 9001 9002 9010
+
+# Point d'entrée
+CMD ["/app/entrypoint.sh"]
