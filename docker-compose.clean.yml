@@ -1,0 +1,56 @@
+# ============================================================================
+# docker-compose.clean.yml - Configuration avec structure de données propre
+# ============================================================================
+#
+# Cette configuration utilise UN SEUL volume pour toutes les données persistantes
+#
+# Utilisation:
+#   1. Exécuter le script de migration: ./scripts/migrate_data_structure.sh
+#   2. Mettre à jour les chemins dans le code (voir CODE_CHANGES.md)
+#   3. Renommer ce fichier en docker-compose.yml ou utiliser:
+#      docker compose -f docker-compose.clean.yml up -d
+#
+# ============================================================================
+
+services:
+  fedgesrv:
+    build:
+      context: .
+      dockerfile: Dockerfile.cpu-full
+    image: fedgesrv:latest
+    network_mode: host
+    restart: unless-stopped
+
+    # ✅ UN SEUL VOLUME - Toutes les données dans /app/data/
+    volumes:
+      - ./data:/app/data
+
+    # Structure dans /app/data/:
+    #   databases/
+    #     ├── fededge.db          (base principale + RAG)
+    #     ├── papertrades.db      (paper trading)
+    #     └── datasets/           (fine-tuning DSPy)
+    #   logs/
+    #     ├── sessions/           (DSPy agent logs)
+    #     ├── chat.log           (llama.cpp chat)
+    #     └── embeddings.log     (llama.cpp embeddings)
+    #   cache/
+    #     └── (market data)
+    #   config/
+    #     ├── llm_config.json
+    #     └── bot_config.json
+
+    # Variables d'environnement (optionnel)
+    environment:
+      - PYTHONUNBUFFERED=1
+      # Chemins mis à jour
+      - DATABASE_URL=sqlite:////app/data/databases/fededge.db
+      - PAPERTRADES_DB=/app/data/databases/papertrades.db
+      - LOG_DIR=/app/data/logs
+      - CACHE_DIR=/app/data/cache
+      - CONFIG_DIR=/app/data/config
+
+    # Exposer les ports (pour référence, network_mode: host les rend tous disponibles)
+    # 8000: API principale (FastAPI)
+    # 9001: llama.cpp chat server
+    # 9002: llama.cpp embeddings server

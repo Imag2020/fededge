@@ -1,0 +1,288 @@
+            <div class="main-container">
+                <div class="card" style="grid-column: 1 / -1; max-width: none;">
+                    <div class="card-header">
+                        <h2 class="card-title">💼 Wallet Management</h2>
+                    </div>
+                    <div class="card-body" style="display: flex; gap: 20px; min-height: 500px;">
+                        <!-- Left column: Wallets list -->
+                        <div class="wallets-list-section" style="flex: 1; min-width: 280px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <h4 style="color: #fff; margin: 0;">📋 Wallets</h4>
+                                <button id="add-wallet-btn" style="
+                                    background: linear-gradient(135deg, #10b981, #059669);
+                                    border: none;
+                                    border-radius: 6px;
+                                    color: #fff;
+                                    padding: 8px 16px;
+                                    cursor: pointer;
+                                    font-size: 12px;
+                                    font-weight: 600;
+                                    transition: all 0.2s ease;
+                                ">+ New</button>
+                            </div>
+                            <div id="wallets-list" style="
+                                background: rgba(0, 0, 0, 0.2);
+                                border: 1px solid rgba(255, 255, 255, 0.1);
+                                border-radius: 8px;
+                                padding: 12px;
+                                max-height: 400px;
+                                overflow-y: auto;
+                            ">
+                                <div style="text-align: center; color: #9ca3af; padding: 20px;">
+                                    Loading wallets...
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Colonne centre : Formulaire d'édition -->
+                        <div class="wallet-form-section" style="flex: 1; min-width: 280px;">
+                            <div id="wallet-form-container" style="
+                                background: rgba(255, 255, 255, 0.05);
+                                border: 1px solid rgba(255, 255, 255, 0.1);
+                                border-radius: 8px;
+                                padding: 20px;
+                                min-height: 400px;
+                            ">
+                                <div id="wallet-form-placeholder" style="
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    height: 150px;
+                                    color: #9ca3af;
+                                    text-align: center;
+                                ">
+                                    <div>
+                                        <div style="font-size: 24px; margin-bottom: 8px;">💼 🎒</div>
+                                        <div style="font-size: 14px;">Select a wallet or create a new one</div>
+                                    </div>
+                                </div>
+
+                                <div id="wallet-form" style="display: none;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                        <h4 id="wallet-form-title" style="color: #fff; margin: 0;">New Wallet</h4>
+                                        <button id="delete-wallet-btn" style="
+                                            background: linear-gradient(135deg, #ef4444, #dc2626);
+                                            border: none;
+                                            border-radius: 6px;
+                                            color: #fff;
+                                            padding: 6px 12px;
+                                            cursor: pointer;
+                                            font-size: 12px;
+                                            display: none;
+                                        ">🗑️ Delete</button>
+                                    </div>
+
+                                    <form id="wallet-form-element">
+                                        <div style="margin-bottom: 16px;">
+                                            <label style="display: block; color: #d1d5db; font-size: 14px; margin-bottom: 4px;">
+                                                Wallet name
+                                            </label>
+                                            <input type="text" id="wallet-name" name="name" required style="
+                                                width: 100%;
+                                                padding: 10px 12px;
+                                                background: rgba(0, 0, 0, 0.3);
+                                                border: 1px solid rgba(255, 255, 255, 0.2);
+                                                border-radius: 6px;
+                                                color: #fff;
+                                                font-size: 14px;
+                                            " placeholder="Ex: Main Wallet">
+                                        </div>
+
+                                        <div style="margin-bottom: 16px;">
+                                            <label style="display: block; color: #d1d5db; font-size: 14px; margin-bottom: 4px;">
+                                                Initial budget (USDC)
+                                            </label>
+                                            <input type="number" id="wallet-initial-budget-input" name="budget" required min="100" step="0.01" style="
+                                                width: 100%;
+                                                padding: 10px 12px;
+                                                background: rgba(0, 0, 0, 0.3);
+                                                border: 1px solid rgba(255, 255, 255, 0.2);
+                                                border-radius: 6px;
+                                                color: #fff;
+                                                font-size: 14px;
+                                            " placeholder="10000.00">
+                                        </div>
+
+                                        <div style="display: flex; gap: 12px;">
+                                            <button type="submit" id="submit-wallet-btn" style="
+                                                flex: 1;
+                                                background: linear-gradient(135deg, #f59e0b, #fbbf24);
+                                                border: none;
+                                                border-radius: 8px;
+                                                color: #000;
+                                                padding: 12px;
+                                                cursor: pointer;
+                                                font-weight: 600;
+                                                transition: all 0.3s ease;
+                                            ">💾 Save</button>
+
+                                            <button type="button" id="cancel-wallet-form" style="
+                                                flex: 1;
+                                                background: rgba(255, 255, 255, 0.1);
+                                                border: 1px solid rgba(255, 255, 255, 0.2);
+                                                border-radius: 8px;
+                                                color: #fff;
+                                                padding: 12px;
+                                                cursor: pointer;
+                                                font-weight: 600;
+                                                transition: all 0.3s ease;
+                                            ">❌ Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Colonne droite : Gestion des Holdings -->
+                        <div class="holdings-management-section" style="flex: 1; min-width: 320px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <h4 style="color: #fff; margin: 0;">📈 Holdings</h4>
+                                <button id="add-holding-btn" style="
+                                    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+                                    border: none;
+                                    border-radius: 6px;
+                                    color: #fff;
+                                    padding: 8px 16px;
+                                    cursor: pointer;
+                                    font-size: 12px;
+                                    font-weight: 600;
+                                    transition: all 0.2s ease;
+                                    display: none;
+                                ">+ Add</button>
+                            </div>
+
+                            <div id="holdings-container" style="
+                                background: rgba(0, 0, 0, 0.2);
+                                border: 1px solid rgba(255, 255, 255, 0.1);
+                                border-radius: 8px;
+                                padding: 12px;
+                                max-height: 400px;
+                                overflow-y: auto;
+                                min-height: 300px;
+                            ">
+                                <div id="holdings-placeholder" style="
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    height: 200px;
+                                    color: #9ca3af;
+                                    text-align: center;
+                                ">
+                                    <div>
+                                        <div style="font-size: 24px; margin-bottom: 8px;">💰 📊</div>
+                                        <div style="font-size: 14px;">Select a wallet to view its holdings</div>
+                                    </div>
+                                </div>
+
+                                <div id="holdings-list" style="display: none;">
+                                    <!-- Holdings list will be populated here -->
+                                </div>
+
+                                <!-- Holdings Summary -->
+                                <div id="holdings-summary" style="
+                                    margin-top: 12px;
+                                    padding-top: 12px;
+                                    border-top: 1px solid rgba(255, 255, 255, 0.1);
+                                    display: none;
+                                ">
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px;">
+                                        <div>
+                                            <span style="color: #9ca3af;">Total P&L:</span>
+                                            <span id="total-pnl" style="color: #10b981; font-weight: 600;">$0.00</span>
+                                        </div>
+                                        <div>
+                                            <span style="color: #9ca3af;">ROI:</span>
+                                            <span id="total-roi" style="color: #10b981; font-weight: 600;">0.00%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Add Holding Form (Initially Hidden) -->
+                            <div id="add-holding-form" style="
+                                background: rgba(139, 92, 246, 0.1);
+                                border: 1px solid rgba(139, 92, 246, 0.3);
+                                border-radius: 8px;
+                                padding: 16px;
+                                margin-top: 12px;
+                                display: none;
+                            ">
+                                <h5 style="color: #fff; margin: 0 0 12px 0; font-size: 14px;">Add une Crypto</h5>
+                                <form id="holding-form-element">
+                                    <div style="margin-bottom: 12px;">
+                                        <label style="display: block; color: #d1d5db; font-size: 12px; margin-bottom: 4px;">
+                                            Cryptomonnaie
+                                        </label>
+                                        <select id="holding-symbol" name="symbol" required style="
+                                            width: 100%;
+                                            padding: 8px 10px;
+                                            background: rgba(0, 0, 0, 0.4);
+                                            border: 1px solid rgba(255, 255, 255, 0.2);
+                                            border-radius: 4px;
+                                            color: #fff;
+                                            font-size: 12px;
+                                        ">
+                                            <option value="">Sélectionner une crypto...</option>
+                                        </select>
+                                    </div>
+
+                                    <div style="margin-bottom: 12px;">
+                                        <label style="display: block; color: #d1d5db; font-size: 12px; margin-bottom: 4px;">
+                                            Quantité
+                                        </label>
+                                        <input type="number" id="holding-quantity" name="quantity" required min="0" step="0.00000001" style="
+                                            width: 100%;
+                                            padding: 8px 10px;
+                                            background: rgba(0, 0, 0, 0.4);
+                                            border: 1px solid rgba(255, 255, 255, 0.2);
+                                            border-radius: 4px;
+                                            color: #fff;
+                                            font-size: 12px;
+                                        " placeholder="0.00">
+                                    </div>
+
+                                    <div style="margin-bottom: 16px;">
+                                        <label style="display: block; color: #d1d5db; font-size: 12px; margin-bottom: 4px;">
+                                            Prix d'achat moyen (optionnel)
+                                        </label>
+                                        <input type="number" id="holding-avg-price" name="avg_buy_price" min="0" step="0.01" style="
+                                            width: 100%;
+                                            padding: 8px 10px;
+                                            background: rgba(0, 0, 0, 0.4);
+                                            border: 1px solid rgba(255, 255, 255, 0.2);
+                                            border-radius: 4px;
+                                            color: #fff;
+                                            font-size: 12px;
+                                        " placeholder="Prix actuel du marché">
+                                    </div>
+
+                                    <div style="display: flex; gap: 8px;">
+                                        <button type="submit" style="
+                                            flex: 1;
+                                            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+                                            border: none;
+                                            border-radius: 6px;
+                                            color: #fff;
+                                            padding: 8px;
+                                            cursor: pointer;
+                                            font-size: 12px;
+                                            font-weight: 600;
+                                        ">✅ Add</button>
+
+                                        <button type="button" id="cancel-holding-form" style="
+                                            flex: 0.7;
+                                            background: rgba(255, 255, 255, 0.1);
+                                            border: 1px solid rgba(255, 255, 255, 0.2);
+                                            border-radius: 6px;
+                                            color: #fff;
+                                            padding: 8px;
+                                            cursor: pointer;
+                                            font-size: 12px;
+                                        ">❌</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

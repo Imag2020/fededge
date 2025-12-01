@@ -1,0 +1,17 @@
+FROM --platform=$BUILDPLATFORM debian:bookworm-slim AS build
+RUN apt-get update && apt-get install -y git build-essential cmake curl ca-certificates procps
+WORKDIR /opt
+RUN git clone --depth 1 https://github.com/ggerganov/llama.cpp.git
+WORKDIR /opt/llama.cpp
+RUN cmake -B build -DLLAMA_CURL=OFF -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release -j$(nproc)
+RUN mkdir -p /out/bin && cp build/bin/llama-server /out/bin/
+
+FROM python:3.13-slim-bookworm
+RUN apt-get update && apt-get install -y curl ca-certificates procps coreutils && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY . /app/
+RUN python -m venv /app/venv && . /app/venv/bin/activate && pip install --no-cache-dir -U pip && pip install --no-cache-dir -r requirements.txt
+COPY --from=build /out/bin/llama-server /app/bin/llama-server
+RUN chmod +x /app/bin/llama-server /app/scripts/*.sh /app/entrypoint.sh && mkdir -p /app/logs /app/run && chmod 777 /app/logs /app/run
+EXPOSE 8000 9001 9002 9010
+CMD ["/app/entrypoint.sh"]

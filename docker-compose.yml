@@ -1,0 +1,19 @@
+services:
+  fedgesrv:
+    build:
+      context: .
+      dockerfile: Dockerfile.cpu-full
+    image: fedgesrv:latest
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      # Persister les logs
+      - ./logs:/app/logs
+
+      # Persister TOUTES les données utilisateur dans /app/data/
+      # NE PAS monter sur /app/backend/db car ça écraserait le code Python!
+      - ./data:/app/data                     # Toutes les données dans /app/data/
+
+      # Persister le cache et la config
+      - ./cache:/app/cache
+      - ./config:/app/config

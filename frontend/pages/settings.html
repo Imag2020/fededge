@@ -1,0 +1,247 @@
+            <div class="main-container">
+                <div class="card" style="grid-column: 1 / -1; max-width: none;">
+                    <div class="card-header">
+                        <h2 class="card-title">⚙️ System Configuration</h2>
+                    </div>
+                    <div class="card-body" style="padding: 24px; overflow-y: auto;">
+
+                        <!-- Section LLM Configuration -->
+                        <div style="
+                            background: rgba(99, 102, 241, 0.1);
+                            border: 1px solid rgba(99, 102, 241, 0.3);
+                            border-radius: 8px;
+                            padding: 20px;
+                            margin-bottom: 24px;
+                        ">
+                            <h4 style="color: #fff; margin: 0 0 16px 0; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+                                🤖 LLM Models Configuration
+                            </h4>
+
+                            <!-- LLM par défaut -->
+                            <div style="
+                                background: rgba(16, 185, 129, 0.1);
+                                border: 1px solid rgba(16, 185, 129, 0.3);
+                                border-radius: 6px;
+                                padding: 12px;
+                                margin-bottom: 16px;
+                            ">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                    <span style="color: #10b981; font-weight: 600; font-size: 14px;">🔧 Default LLM (Local)</span>
+                                    <span style="background: rgba(16, 185, 129, 0.2); color: #10b981; padding: 2px 8px; border-radius: 4px; font-size: 12px;">ACTIVE</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px;">
+                                    <div>
+                                        <span style="color: #9ca3af;">Name:</span>
+                                        <span style="color: #fff; margin-left: 8px;" id="default-llm-name">Loading...</span>
+                                    </div>
+                                    <div>
+                                        <span style="color: #9ca3af;">Model:</span>
+                                        <span style="color: #fff; margin-left: 8px;" id="default-llm-model">Loading...</span>
+                                    </div>
+                                    <div>
+                                        <span style="color: #9ca3af;">URL:</span>
+                                        <span style="color: #fff; margin-left: 8px;" id="default-llm-url">Loading...</span>
+                                    </div>
+                                    <div>
+                                        <span style="color: #9ca3af;">Type:</span>
+                                        <span style="color: #10b981; margin-left: 8px; font-weight: 600;" id="default-llm-type">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- List of configured LLMs -->
+                            <div style="margin-bottom: 16px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                    <h5 style="color: #fff; margin: 0; font-size: 16px;">📋 Model Pool</h5>
+                                    <button id="add-llm-btn" style="
+                                        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+                                        border: none;
+                                        border-radius: 6px;
+                                        color: #fff;
+                                        padding: 6px 12px;
+                                        cursor: pointer;
+                                        font-size: 12px;
+                                        font-weight: 600;
+                                        transition: all 0.2s ease;
+                                    ">+ Add LLM</button>
+                                </div>
+
+                                <div id="llm-pool-list" style="
+                                    background: rgba(0, 0, 0, 0.2);
+                                    border: 1px solid rgba(255, 255, 255, 0.1);
+                                    border-radius: 8px;
+                                    padding: 12px;
+                                    max-height: 300px;
+                                    overflow-y: auto;
+                                ">
+                                    <div style="text-align: center; color: #9ca3af; padding: 20px;">
+                                        No additional LLM models configured
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Embeddings Models Configuration Section -->
+                        <div style="
+                            background: rgba(139, 92, 246, 0.1);
+                            border: 1px solid rgba(139, 92, 246, 0.3);
+                            border-radius: 8px;
+                            padding: 20px;
+                            margin-bottom: 24px;
+                        ">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <h4 style="color: #fff; margin: 0; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+                                    🧮 Embeddings Models Configuration
+                                </h4>
+                                <button id="add-embedding-btn" style="
+                                    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+                                    border: none;
+                                    color: white;
+                                    padding: 8px 16px;
+                                    border-radius: 6px;
+                                    cursor: pointer;
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    transition: all 0.2s;
+                                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(139, 92, 246, 0.4)'"
+                                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                    + Add Embedding Model
+                                </button>
+                            </div>
+
+                            <!-- Embeddings list container (will be populated by JavaScript) -->
+                            <div id="embeddings-list" style="margin-bottom: 16px;">
+                                <!-- Embeddings will be loaded here by JavaScript -->
+                                <div style="text-align: center; color: #9ca3af; padding: 20px;">
+                                    Loading embeddings...
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Trading Simulations Configuration Section -->
+                        <div style="
+                            background: rgba(245, 158, 11, 0.1);
+                            border: 1px solid rgba(245, 158, 11, 0.3);
+                            border-radius: 8px;
+                            padding: 20px;
+                            margin-bottom: 24px;
+                        ">
+                            <h4 style="color: #fff; margin: 0 0 16px 0; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+                                💼 Trading Simulations
+                            </h4>
+
+                            <!-- Parallel Limits Configuration -->
+                            <div style="
+                                background: rgba(0, 0, 0, 0.2);
+                                border: 1px solid rgba(255, 255, 255, 0.1);
+                                border-radius: 6px;
+                                padding: 12px;
+                                margin-bottom: 16px;
+                            ">
+                                <h5 style="color: #fff; margin: 0 0 12px 0; font-size: 14px;">⏱️ Parallel Limits</h5>
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; font-size: 13px;">
+                                    <div>
+                                        <label style="color: #9ca3af; display: block; margin-bottom: 4px;">Every 5 min</label>
+                                        <input id="limit-5min" type="number" min="0" max="10" value="1" style="
+                                            background: rgba(0, 0, 0, 0.3);
+                                            border: 1px solid rgba(255, 255, 255, 0.2);
+                                            border-radius: 4px;
+                                            color: #fff;
+                                            padding: 6px 8px;
+                                            width: 100%;
+                                        " />
+                                    </div>
+                                    <div>
+                                        <label style="color: #9ca3af; display: block; margin-bottom: 4px;">Every 15 min</label>
+                                        <input id="limit-15min" type="number" min="0" max="10" value="1" style="
+                                            background: rgba(0, 0, 0, 0.3);
+                                            border: 1px solid rgba(255, 255, 255, 0.2);
+                                            border-radius: 4px;
+                                            color: #fff;
+                                            padding: 6px 8px;
+                                            width: 100%;
+                                        " />
+                                    </div>
+                                    <div>
+                                        <label style="color: #9ca3af; display: block; margin-bottom: 4px;">Every 1 hour</label>
+                                        <input id="limit-1hour" type="number" min="0" max="10" value="1" style="
+                                            background: rgba(0, 0, 0, 0.3);
+                                            border: 1px solid rgba(255, 255, 255, 0.2);
+                                            border-radius: 4px;
+                                            color: #fff;
+                                            padding: 6px 8px;
+                                            width: 100%;
+                                        " />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <h5 style="color: #fff; margin: 0; font-size: 16px;">🎯 Active Sessions</h5>
+                                <button id="add-simulation-btn" style="
+                                    background: linear-gradient(135deg, #f59e0b, #d97706);
+                                    border: none;
+                                    border-radius: 6px;
+                                    color: #fff;
+                                    padding: 6px 12px;
+                                    cursor: pointer;
+                                    font-size: 12px;
+                                    font-weight: 600;
+                                    transition: all 0.2s ease;
+                                ">+ New Simulation</button>
+                            </div>
+
+                            <div id="trading-simulations-list" style="
+                                background: rgba(0, 0, 0, 0.2);
+                                border: 1px solid rgba(255, 255, 255, 0.1);
+                                border-radius: 8px;
+                                padding: 12px;
+                                max-height: 400px;
+                                overflow-y: auto;
+                            ">
+                                <div style="text-align: center; color: #9ca3af; padding: 20px;">
+                                    No trading simulations configured
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section Actions -->
+                        <div style="
+                            background: rgba(255, 255, 255, 0.05);
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            border-radius: 8px;
+                            padding: 16px;
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                        ">
+                            <div style="color: #9ca3af; font-size: 14px;">
+                                Last save: <span id="last-save-time" style="color: #fff;">-</span>
+                            </div>
+                            <div style="display: flex; gap: 12px;">
+                                <button id="reset-config-btn" style="
+                                    background: rgba(239, 68, 68, 0.2);
+                                    border: 1px solid rgba(239, 68, 68, 0.3);
+                                    border-radius: 6px;
+                                    color: #ef4444;
+                                    padding: 8px 16px;
+                                    cursor: pointer;
+                                    font-size: 12px;
+                                    font-weight: 600;
+                                ">🔄 Reset</button>
+                                <button id="save-config-btn" style="
+                                    background: linear-gradient(135deg, #10b981, #059669);
+                                    border: none;
+                                    border-radius: 6px;
+                                    color: #fff;
+                                    padding: 8px 16px;
+                                    cursor: pointer;
+                                    font-size: 12px;
+                                    font-weight: 600;
+                                ">💾 Save</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>

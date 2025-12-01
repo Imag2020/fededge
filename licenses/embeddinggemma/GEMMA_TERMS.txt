@@ -1,0 +1,35 @@
+Gemma Terms of Use
+
+Last modified: February 21, 2024
+
+These terms govern the use of the Gemma models and services.
+
+PLEASE READ THESE TERMS CAREFULLY. BY ACCESSING, DOWNLOADING, OR USING THE GEMMA MODELS,
+YOU ACCEPT AND AGREE TO BE BOUND BY THESE TERMS.
+
+1. LICENSE GRANT
+Subject to your compliance with these Terms, Google grants you a non-exclusive, worldwide,
+non-transferable, non-sublicensable, revocable license to use the Gemma models for
+commercial and non-commercial purposes.
+
+2. USAGE RESTRICTIONS
+You may not use Gemma to:
+- Violate any applicable laws or regulations
+- Harm, abuse, harass, or threaten individuals or groups
+- Generate or distribute content that is illegal, harmful, or violates third-party rights
+- Develop products that compete directly with Google's AI offerings
+
+3. DISTRIBUTION
+If you distribute applications using Gemma models, you must:
+- Include attribution to Google Gemma
+- Include a copy of these terms or a link to them
+- Not misrepresent the source or capabilities of the models
+
+4. NO WARRANTY
+THE GEMMA MODELS ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND.
+
+5. LIMITATION OF LIABILITY
+IN NO EVENT SHALL GOOGLE BE LIABLE FOR ANY DAMAGES ARISING FROM USE OF THE MODELS.
+
+For the complete and official Gemma Terms of Use, please visit:
+https://ai.google.dev/gemma/terms

@@ -1,0 +1,195 @@
+{
+  "telegram": {
+    "token": "",
+    "default_chat_id": ""
+  },
+  "trading": {
+    "user_symbols": [],
+    "scan_seconds": 180,
+    "top_k": 5,
+    "kline_interval": "5m",
+    "kline_limit": 400,
+    "usdc_only": false,
+    "quote_whitelist": [
+      "USDT"
+    ]
+  },
+  "strategy": {
+    "sma_fast": 20,
+    "sma_slow": 200,
+    "long_rsi_min": 24,
+    "long_rsi_max": 50,
+    "shorts_enabled": false,
+    "short_rsi_min": 30,
+    "short_rsi_max": 55,
+    "min_atr_pct": 0.08,
+    "min_24h_usd": 50000,
+    "min_delta_sma_bps": 1,
+    "min_sma20_slope_bps": 0
+  },
+  "exits": {
+    "use_atr_exits": true,
+    "tp_pct_min": 1.0,
+    "sl_pct_min": 0.5,
+    "atr_tp_mult": 1.5,
+    "atr_sl_mult": 1.0,
+    "oco_buffer_pct": 0.1
+  },
+  "alerts": {
+    "alert_mode": "EVENTS",
+    "cooldown_min": 30
+  },
+  "logging": {
+    "log_level": "INFO",
+    "log_to_file": true,
+    "log_dir": "./logs",
+    "log_rotate_bytes": 5242880,
+    "log_backup_count": 5,
+    "debug_top_n": 10,
+    "trace_dir": "./trace",
+    "trace_symbols": [],
+    "dump_on_reject": false
+  },
+  "paper_trading": {
+    "enabled": true,
+    "db_path": "./papertrades.db",
+    "realtime_tpsl": false,
+    "realtime_tpsl_choose": false,
+    "rt_interval": "1m",
+    "rt_limit": 120,
+    "in_candle_priority": "SL_FIRST",
+    "max_hold_hours": 12
+  },
+  "advanced": {
+    "be_enable": false,
+    "be_trigger_frac": 0.6,
+    "be_offset_pct": 0.05,
+    "recent_cross_bars": 1,
+    "require_1h_trend": false,
+    "micro_confirm_1m": false,
+    "mc1m_bars": 3,
+    "prefilter_top_n": 300,
+    "pricechange_abs_min": 0.0
+  },
+  "presets": {
+    "scalp": {
+      "trading": {
+        "usdc_only": false,
+        "quote_whitelist": [
+          "EUR",
+          "USDC",
+          "USDT"
+        ],
+        "scan_seconds": 180,
+        "kline_interval": "5m",
+        "kline_limit": 240
+      },
+      "strategy": {
+        "min_24h_usd": 300000,
+        "min_atr_pct": 0.15,
+        "min_delta_sma_bps": 4,
+        "min_sma20_slope_bps": 0.8
+      },
+      "exits": {
+        "atr_tp_mult": 1.3,
+        "tp_pct_min": 0.9,
+        "sl_pct_min": 0.6
+      },
+      "alerts": {
+        "cooldown_min": 20
+      },
+      "advanced": {
+        "recent_cross_bars": 3,
+        "require_1h_trend": true,
+        "micro_confirm_1m": true,
+        "mc1m_bars": 3,
+        "prefilter_top_n": 300,
+        "be_enable": true
+      },
+      "paper_trading": {
+        "realtime_tpsl": true,
+        "realtime_tpsl_choose": true,
+        "max_hold_hours": 12
+      }
+    },
+    "day": {
+      "trading": {
+        "usdc_only": false,
+        "quote_whitelist": [
+          "USDT",
+          "USDC",
+          "EUR"
+        ],
+        "scan_seconds": 300,
+        "kline_interval": "15m",
+        "kline_limit": 300
+      },
+      "strategy": {
+        "min_24h_usd": 300000,
+        "min_atr_pct": 0.08,
+        "min_delta_sma_bps": 4,
+        "min_sma20_slope_bps": 0.6
+      },
+      "exits": {
+        "atr_tp_mult": 1.4,
+        "tp_pct_min": 1.1,
+        "sl_pct_min": 0.7
+      },
+      "alerts": {
+        "cooldown_min": 20
+      },
+      "advanced": {
+        "recent_cross_bars": 3,
+        "require_1h_trend": true,
+        "micro_confirm_1m": false,
+        "prefilter_top_n": 350
+      },
+      "paper_trading": {
+        "rt_interval": "5m",
+        "rt_limit": 216,
+        "max_hold_hours": 24
+      }
+    },
+    "swing": {
+      "trading": {
+        "usdc_only": false,
+        "quote_whitelist": [
+          "EUR",
+          "USDC",
+         "USDT"
+        ],
+        "scan_seconds": 600,
+        "kline_interval": "4h",
+        "kline_limit": 300,
+        "top_k": 8
+      },
+      "strategy": {
+        "min_24h_usd": 300000,
+        "min_atr_pct": 0.6,
+        "min_delta_sma_bps": 6,
+        "min_sma20_slope_bps": 0.8,
+        "long_rsi_max": 68
+      },
+      "exits": {
+        "atr_tp_mult": 2.0,
+        "tp_pct_min": 3.0,
+        "sl_pct_min": 1.5,
+        "oco_buffer_pct": 0.15
+      },
+      "alerts": {
+        "cooldown_min": 60
+      },
+      "advanced": {
+        "recent_cross_bars": 3,
+        "require_1h_trend": false,
+        "micro_confirm_1m": false,
+        "prefilter_top_n": 250
+      },
+      "paper_trading": {
+        "rt_interval": "1h",
+        "rt_limit": 240,
+        "max_hold_hours": 168
+      }
+    }
+  }
+}

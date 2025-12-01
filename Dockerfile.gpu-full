@@ -1,0 +1,105 @@
+# Multi-stage build for FedEdge GPU-enabled deployment
+# Supports: x86_64 with NVIDIA GPU (CUDA 12.x)
+# Target devices: PC with NVIDIA GPU, NVIDIA Jetson devices
+
+# ============================================================================
+# Stage 1: Build llama.cpp server with CUDA support
+# ============================================================================
+FROM nvidia/cuda:12.2.0-devel-ubuntu22.04 as build
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    build-essential \
+    cmake \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt
+
+# Clone llama.cpp
+RUN git clone --depth 1 https://github.com/ggerganov/llama.cpp.git
+
+WORKDIR /opt/llama.cpp
+
+# Build llama-server with CUDA support
+RUN cmake -B build \
+    -DGGML_CUDA=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    && cmake --build build --config Release -j$(nproc)
+
+# Prepare output
+RUN mkdir -p /out/bin && cp build/bin/llama-server /out/bin/
+
+# ============================================================================
+# Stage 2: Runtime image with CUDA runtime
+# ============================================================================
+FROM nvidia/cuda:12.2.0-runtime-ubuntu22.04
+
+# Metadata
+LABEL maintainer="Imed MAGROUNE <imed@fededge.net>"
+LABEL description="FedEdge AI Trading Platform - GPU-enabled"
+LABEL version="0.1.0"
+
+# Environment
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV DEBIAN_FRONTEND=noninteractive
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
+
+WORKDIR /app
+
+# Install Python and runtime dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3.11 \
+    python3.11-venv \
+    python3-pip \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy application code
+COPY backend/ /app/backend/
+COPY frontend/ /app/frontend/
+COPY requirements.txt /app/
+
+# Create virtual environment and install Python dependencies
+RUN python3.11 -m venv /app/venv && \
+    . /app/venv/bin/activate && \
+    pip install --no-cache-dir -U pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copy models (must be present in build context)
+COPY models/ /app/models/
+
+# Copy licenses and documentation
+COPY licenses/ /app/licenses/
+COPY MODELS.md /app/MODELS.md
+
+# Copy llama-server binary from build stage
+COPY --from=build /out/bin/llama-server /usr/local/bin/llama-server
+
+# Copy entrypoint script (modified for GPU)
+COPY scripts/entrypoint_full.sh /app/entrypoint_gpu.sh
+RUN chmod +x /app/entrypoint_gpu.sh
+
+# Modify entrypoint for GPU usage
+RUN sed -i 's/--n-gpu-layers 0/--n-gpu-layers 99/' /app/entrypoint_gpu.sh
+
+# Create necessary directories
+RUN mkdir -p /app/logs /app/cache /app/data
+
+# Expose ports
+# 8000: FastAPI application
+# 9001: llama-server (chat)
+# 9002: llama-server (embeddings)
+EXPOSE 8000 9001 9002
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:8000/health || exit 1
+
+# Run entrypoint
+CMD ["/app/entrypoint_gpu.sh"]

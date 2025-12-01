@@ -1,0 +1,30 @@
+{
+  "crypto_sources": {
+    "target_cryptos": [
+      "bitcoin",
+      "ethereum",
+      "solana",
+      "ripple",
+      "binancecoin",
+      "cardano",
+      "dogecoin",
+      "polkadot",
+      "avalanche-2",
+      "chainlink",
+      "litecoin",
+      "near",
+      "uniswap",
+      "sui",
+      "the-open-network",
+      "tron",
+      "stellar",
+      "monero",
+      "pepe",
+      "internet-computer",
+      "aave",
+      "tether",
+      "usd-coin",
+      "dai"
+    ]
+  }
+}

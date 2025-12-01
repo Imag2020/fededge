@@ -1,0 +1,479 @@
+{
+  "sources": [
+    {
+      "id": 1,
+      "url": "https://bitcoin.org/bitcoin.pdf",
+      "title": "Bitcoin Whitepaper",
+      "tags": [
+        "core",
+        "bitcoin",
+        "whitepaper"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:36:40.788781",
+      "chunks_count": 21,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 2,
+      "url": "https://ethereum.org/en/whitepaper/",
+      "title": "Ethereum Whitepaper (site)",
+      "tags": [
+        "core",
+        "ethereum",
+        "whitepaper"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:36:42.572177",
+      "chunks_count": 82,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 3,
+      "url": "https://ethereum.github.io/yellowpaper/paper.pdf",
+      "title": "Ethereum Yellow Paper (Shanghai)",
+      "tags": [
+        "core",
+        "ethereum",
+        "spec"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:36:45.667035",
+      "chunks_count": 144,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 4,
+      "url": "https://ethereum.org/en/developers/docs/",
+      "title": "Ethereum Docs",
+      "tags": [
+        "core",
+        "ethereum",
+        "docs"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:36:46.970243",
+      "chunks_count": 4,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 5,
+      "url": "https://docs.soliditylang.org/en/latest/",
+      "title": "Solidity Docs",
+      "tags": [
+        "evm",
+        "solidity",
+        "docs"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:36:48.322752",
+      "chunks_count": 9,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 6,
+      "url": "https://book.getfoundry.sh/",
+      "title": "Foundry Book",
+      "tags": [
+        "evm",
+        "tooling"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:36:49.697371",
+      "chunks_count": 2,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 7,
+      "url": "https://hardhat.org/getting-started/",
+      "title": "Hardhat Docs",
+      "tags": [
+        "evm",
+        "tooling"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:36:51.034203",
+      "chunks_count": 13,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 8,
+      "url": "https://docs.openzeppelin.com/contracts/latest/",
+      "title": "OpenZeppelin Contracts Docs",
+      "tags": [
+        "security",
+        "solidity",
+        "standards"
+      ],
+      "indexed": false,
+      "indexed_at": null,
+      "chunks_count": 0,
+      "last_error": "Error fetching https://docs.openzeppelin.com/contracts/latest/: 404 Client Error: Not Found for url: https://docs.openzeppelin.com/contracts/5.x/latest/",
+      "enabled": true
+    },
+    {
+      "id": 9,
+      "url": "https://uniswap.org/whitepaper-v3.pdf",
+      "title": "Uniswap v3 Whitepaper",
+      "tags": [
+        "defi",
+        "dex",
+        "amm",
+        "whitepaper"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:36:54.291401",
+      "chunks_count": 38,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 10,
+      "url": "https://docs.uniswap.org/",
+      "title": "Uniswap Docs",
+      "tags": [
+        "defi",
+        "dex",
+        "docs"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:36:55.561010",
+      "chunks_count": 2,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 11,
+      "url": "https://docs.aave.com/",
+      "title": "Aave Docs",
+      "tags": [
+        "defi",
+        "lending",
+        "docs"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:36:56.946217",
+      "chunks_count": 1,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 12,
+      "url": "https://docs.makerdao.com/",
+      "title": "MakerDAO Docs",
+      "tags": [
+        "defi",
+        "stablecoin",
+        "dai",
+        "docs"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:36:58.321122",
+      "chunks_count": 3,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 13,
+      "url": "https://docs.curve.fi/",
+      "title": "Curve Docs",
+      "tags": [
+        "defi",
+        "amm",
+        "docs"
+      ],
+      "indexed": false,
+      "indexed_at": null,
+      "chunks_count": 0,
+      "last_error": "No meaningful content extracted from HTML",
+      "enabled": true
+    },
+    {
+      "id": 14,
+      "url": "https://docs.lido.fi/",
+      "title": "Lido Docs",
+      "tags": [
+        "defi",
+        "liquid-staking",
+        "docs"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:37:10.570186",
+      "chunks_count": 9,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 15,
+      "url": "https://docs.sushi.com/",
+      "title": "Sushi Docs",
+      "tags": [
+        "defi",
+        "dex",
+        "docs"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:37:11.840212",
+      "chunks_count": 1,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 16,
+      "url": "https://docs.chain.link/",
+      "title": "Chainlink Docs (Oracle)",
+      "tags": [
+        "oracle",
+        "defi",
+        "docs"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:37:13.166190",
+      "chunks_count": 1,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 17,
+      "url": "https://community.optimism.io/docs/",
+      "title": "Optimism Docs",
+      "tags": [
+        "l2",
+        "optimism",
+        "rollup",
+        "docs"
+      ],
+      "indexed": false,
+      "indexed_at": null,
+      "chunks_count": 0,
+      "last_error": "Error fetching https://community.optimism.io/docs/: 404 Client Error: Not Found for url: https://community.optimism.io/docs",
+      "enabled": true
+    },
+    {
+      "id": 18,
+      "url": "https://docs.arbitrum.io/",
+      "title": "Arbitrum Docs",
+      "tags": [
+        "l2",
+        "arbitrum",
+        "rollup",
+        "docs"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:37:16.210351",
+      "chunks_count": 3,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 19,
+      "url": "https://docs.zkync.io/",
+      "title": "zkSync Docs",
+      "tags": [
+        "l2",
+        "zksync",
+        "rollup",
+        "docs"
+      ],
+      "indexed": false,
+      "indexed_at": null,
+      "chunks_count": 0,
+      "last_error": "Error fetching https://docs.zkync.io/: HTTPSConnectionPool(host='docs.zkync.io', port=443): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x79b2b01aab30>: Failed to establish a new connection: [Errno -2] Name or service not known'))",
+      "enabled": true
+    },
+    {
+      "id": 20,
+      "url": "https://docs.starknet.io/",
+      "title": "Starknet Docs",
+      "tags": [
+        "l2",
+        "starknet",
+        "cairo",
+        "docs"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:37:25.546110",
+      "chunks_count": 2,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 21,
+      "url": "https://docs.solana.com/",
+      "title": "Solana Docs",
+      "tags": [
+        "l1",
+        "solana",
+        "docs"
+      ],
+      "indexed": false,
+      "indexed_at": null,
+      "chunks_count": 0,
+      "last_error": "No meaningful content extracted from HTML",
+      "enabled": true
+    },
+    {
+      "id": 22,
+      "url": "https://docs.cardano.org/",
+      "title": "Cardano Docs",
+      "tags": [
+        "l1",
+        "cardano",
+        "docs"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:37:28.045647",
+      "chunks_count": 2,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 23,
+      "url": "https://docs.cosmos.network/",
+      "title": "Cosmos SDK Docs",
+      "tags": [
+        "l1",
+        "cosmos",
+        "interop",
+        "docs"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:37:29.346893",
+      "chunks_count": 1,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 24,
+      "url": "https://wiki.polkadot.network/",
+      "title": "Polkadot Wiki",
+      "tags": [
+        "l1",
+        "polkadot",
+        "parachain",
+        "docs"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:37:30.745839",
+      "chunks_count": 1,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 25,
+      "url": "https://docs.avax.network/",
+      "title": "Avalanche Docs",
+      "tags": [
+        "l1",
+        "avalanche",
+        "docs"
+      ],
+      "indexed": false,
+      "indexed_at": null,
+      "chunks_count": 0,
+      "last_error": "No meaningful content extracted from HTML",
+      "enabled": true
+    },
+    {
+      "id": 26,
+      "url": "https://eips.ethereum.org/EIPS/eip-20",
+      "title": "ERC-20",
+      "tags": [
+        "evm",
+        "token",
+        "standard"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:37:33.205297",
+      "chunks_count": 6,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 27,
+      "url": "https://eips.ethereum.org/EIPS/eip-721",
+      "title": "ERC-721",
+      "tags": [
+        "nft",
+        "standard"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:37:34.628633",
+      "chunks_count": 28,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 28,
+      "url": "https://eips.ethereum.org/EIPS/eip-1155",
+      "title": "ERC-1155",
+      "tags": [
+        "nft",
+        "standard"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:37:36.195877",
+      "chunks_count": 51,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 29,
+      "url": "https://eips.ethereum.org/EIPS/eip-2612",
+      "title": "EIP-2612 Permit",
+      "tags": [
+        "evm",
+        "token",
+        "standard"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:37:37.553287",
+      "chunks_count": 9,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 30,
+      "url": "https://eips.ethereum.org/EIPS/eip-4626",
+      "title": "EIP-4626 Tokenized Vault",
+      "tags": [
+        "defi",
+        "standard"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:37:38.952664",
+      "chunks_count": 23,
+      "last_error": null,
+      "enabled": true
+    },
+    {
+      "id": 33,
+      "url": "https://a16zcrypto.com/posts/article/introducing-twist-and-shout/",
+      "title": "a16z Crypto Research",
+      "tags": [
+        "[research",
+        "crypto",
+        "general]"
+      ],
+      "indexed": true,
+      "indexed_at": "2025-08-22T14:37:40.266290",
+      "chunks_count": 9,
+      "last_error": null,
+      "enabled": true
+    }
+  ],
+  "metadata": {
+    "last_updated": "2025-08-22T14:37:40.266304",
+    "total_sources": 31,
+    "indexed_sources": 25,
+    "next_id": 34,
+    "collection_name": "base_embeddings"
+  }
+}

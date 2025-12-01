@@ -1,0 +1,55 @@
+# Exclure tous les fichiers .md sauf README.md
+*.md
+!README.md
+
+# Exclure les notebooks
+*.ipynb
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# Fichiers Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.venv/
+venv/
+ENV/
+
+# Modèles ML et fichiers volumineux
+models/
+bin/
+*.gguf
+*.bin
+*.pt
+*.pth
+*.h5
+*.onnx
+*.safetensors
+
+# Données et logs
+data/
+logs/
+*.log
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.env.local
+
+# Fichiers de backup
+*.backup
+*-checkpoint.*

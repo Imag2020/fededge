@@ -1,0 +1,87 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/*.log
+nohup.out
+
+# Cache
+cache/
+*.cache
+
+# Database (NEVER include user data in image!)
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+backend/db/*.db
+backend/db/*.db-journal
+backend/bot/*.db
+datasets/*.db
+notebooks/datasets/*.db
+
+# Config (user-specific, mounted as volume)
+config/
+config/*.json
+
+# Environment variables
+.env
+.env.local
+
+# Development files
+*.md.backup
+*.tmp
+.DS_Store
+
+# Large model files (if not needed)
+# Uncomment to exclude models from build context:
+# models/*.gguf
+
+# llama.cpp source (not needed in final image)
+llama.cpp/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Documentation source
+docs/
+
+# Test files
+tests/
+test_*.py
+*_test.py
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# Backup files
+*.bak
+*.backup
